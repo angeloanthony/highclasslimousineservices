@@ -1,0 +1,62 @@
+# robots.txt for High Class Limousine Services
+# https://highclasslimousineservices.com
+
+# ===== STANDARD SEARCH CRAWLERS =====
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.json$
+Disallow: /thank-you/
+
+# ===== AI / LLM CRAWLERS — EXPLICITLY ALLOWED =====
+# We want our content to be discoverable by AI assistants and search.
+# Allowing these crawlers helps us appear in AI-generated answers.
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+# ===== SITEMAP =====
+Sitemap: https://highclasslimousineservices.com/sitemap.xml

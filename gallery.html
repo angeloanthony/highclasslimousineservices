@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery | High Class Limousine Services Vernal, Utah</title>
+<meta name="description" content="Photo gallery of High Class Limousine Services. See our stretch limousine, interior, events, and Vernal, Utah scenery.">
+<link rel="canonical" href="https://highclasslimousineservices.com/gallery.html">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar__inner">
+    <div class="topbar__left">
+      <span>Vernal · Uintah Basin · Utah</span>
+      <span>Available 7 Days a Week</span>
+    </div>
+    <div><a href="tel:+14352199447" class="topbar__phone">☏ (435) 219-9447</a></div>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__brand">
+      <img src="images/logo.png" alt="High Class Limousine Services">
+      <span><strong>High Class</strong> · <span>Limousine</span></span>
+    </a>
+    <button class="nav__toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav__menu').classList.toggle('is-open')">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav__menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li class="has-drop">
+        <a href="services.html">Services</a>
+        <ul class="nav__drop">
+          <li><a href="weddings.html">Weddings</a></li>
+          <li><a href="prom.html">Proms &amp; School Events</a></li>
+          <li><a href="airport.html">Airport Transportation</a></li>
+          <li><a href="corporate.html">Corporate Travel</a></li>
+          <li><a href="parties.html">Parties &amp; Events</a></li>
+          <li><a href="tours.html">Scenic Utah Tours</a></li>
+        </ul>
+      </li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="contact.html#quote" class="nav__cta">Book Now</a></li>
+    </ul>
+  </div>
+</header>
+
+<section class="page-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span> Gallery</div>
+    <h1>The <span class="italic-script gold-text">Gallery</span></h1>
+    <p>The fleet, the interior, the events, and the Vernal scenery we call home.</p>
+  </div>
+</section>
+
+<section class="gallery-carousel-section">
+  <div class="container">
+
+    <div class="gallery-filters reveal">
+      <button class="active" data-filter="all">All</button>
+      <button data-filter="exterior">Exterior</button>
+      <button data-filter="interior">Interior</button>
+      <button data-filter="events">Events</button>
+      <button data-filter="vernal">Vernal Scenery</button>
+      <button data-filter="brand">Brand</button>
+    </div>
+
+    <!-- CAROUSEL -->
+    <div class="carousel reveal" id="galleryCarousel" aria-roledescription="carousel" aria-label="Photo gallery">
+      <div class="carousel__corner carousel__corner--tl"></div>
+      <div class="carousel__corner carousel__corner--tr"></div>
+      <div class="carousel__corner carousel__corner--bl"></div>
+      <div class="carousel__corner carousel__corner--br"></div>
+
+      <button class="carousel__arrow carousel__arrow--prev" aria-label="Previous image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+      </button>
+
+      <div class="carousel__track" id="carouselTrack">
+        <div class="carousel__slide" data-cat="exterior">
+          <img src="images/gallery-1.jpg" alt="Stretch limousine exterior at sunset in Vernal" loading="lazy">
+          <div class="carousel__caption"><span class="carousel__cat">Exterior</span><span class="carousel__title">Sunset Arrival</span></div>
+        </div>
+        <div class="carousel__slide" data-cat="interior">
+          <img src="images/gallery-2.jpg" alt="Limousine interior with gold mood lighting" loading="lazy">
+          <div class="carousel__caption"><span class="carousel__cat">Interior</span><span class="carousel__title">Gold Hour</span></div>
+        </div>
+        <div class="carousel__slide" data-cat="brand">
+          <img src="images/gallery-3.jpg" alt="High Class Limousine Services branding" loading="lazy">
+          <div class="carousel__caption"><span class="carousel__cat">Brand</span><span class="carousel__title">The Brand</span></div>
+        </div>
+        <div class="carousel__slide" data-cat="vernal">
+          <img src="images/gallery-4.jpg" alt="Limousine on Vernal Utah highway" loading="lazy">
+          <div class="carousel__caption"><span class="carousel__cat">Vernal Scenery</span><span class="carousel__title">Basin Road</span></div>
+        </div>
+        <div class="carousel__slide" data-cat="events">
+          <img src="images/gallery-5.jpg" alt="Wedding limo arrival" loading="lazy">
+          <div class="carousel__caption"><span class="carousel__cat">Events</span><span class="carousel__title">Wedding Day</span></div>
+        </div>
+        <div class="carousel__slide" data-cat="events">
+          <img src="images/gallery-6.jpg" alt="Prom limousine group photo" loading="lazy">
+          <div class="carousel__caption"><span class="carousel__cat">Events</span><span class="carousel__title">Prom Night</span></div>
+        </div>
+        <div class="carousel__slide" data-cat="interior">
+          <img src="images/gallery-7.jpg" alt="Limousine leather seating detail" loading="lazy">
+          <div class="carousel__caption"><span class="carousel__cat">Interior</span><span class="carousel__title">Leather &amp; Glow</span></div>
+        </div>
+        <div class="carousel__slide" data-cat="vernal">
+          <img src="images/gallery-8.jpg" alt="Limousine at Dinosaur National Monument" loading="lazy">
+          <div class="carousel__caption"><span class="carousel__cat">Vernal Scenery</span><span class="carousel__title">Dinosaur Country</span></div>
+        </div>
+        <div class="carousel__slide" data-cat="exterior">
+          <img src="images/gallery-9.jpg" alt="Limo reflection on wet pavement" loading="lazy">
+          <div class="carousel__caption"><span class="carousel__cat">Exterior</span><span class="carousel__title">Reflection</span></div>
+        </div>
+        <div class="carousel__slide" data-cat="interior">
+          <img src="images/gallery-10.jpg" alt="Champagne flutes inside limo" loading="lazy">
+          <div class="carousel__caption"><span class="carousel__cat">Interior</span><span class="carousel__title">Cheers</span></div>
+        </div>
+        <div class="carousel__slide" data-cat="brand">
+          <img src="images/gallery-11.jpg" alt="Gold brand detail" loading="lazy">
+          <div class="carousel__caption"><span class="carousel__cat">Brand</span><span class="carousel__title">Class Isn't Extinct</span></div>
+        </div>
+        <div class="carousel__slide" data-cat="events">
+          <img src="images/gallery-12.jpg" alt="Birthday party limousine arrival" loading="lazy">
+          <div class="carousel__caption"><span class="carousel__cat">Events</span><span class="carousel__title">The Celebration</span></div>
+        </div>
+      </div>
+
+      <button class="carousel__arrow carousel__arrow--next" aria-label="Next image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+      </button>
+    </div>
+
+    <!-- DOT NAV -->
+    <div class="carousel__dots" id="carouselDots" role="tablist" aria-label="Slide navigation"></div>
+
+    <!-- COUNTER -->
+    <div class="carousel__counter">
+      <span id="carouselCurrent">1</span>
+      <span class="carousel__counter-divider"></span>
+      <span id="carouselTotal">12</span>
+    </div>
+
+  </div>
+</section>
+
+<section class="cta-final">
+  <h2>Want to be <span class="italic-script gold-text">in the next one?</span></h2>
+  <p>Book your ride and we'll capture the moment.</p>
+  <div class="cta-final__actions">
+    <a href="contact.html#quote" class="btn btn--gold">Book Now <span class="btn__arrow">→</span></a>
+    <a href="tel:+14352199447" class="btn btn--ghost-light">Call (435) 219-9447</a>
+  </div>
+</section>
+
+<script>
+/* ============================================================
+   GALLERY CAROUSEL
+   - Filtering, dot nav, arrow controls, keyboard, swipe, autoplay
+   ============================================================ */
+(function () {
+  const track    = document.getElementById('carouselTrack');
+  const dotsWrap = document.getElementById('carouselDots');
+  const prevBtn  = document.querySelector('.carousel__arrow--prev');
+  const nextBtn  = document.querySelector('.carousel__arrow--next');
+  const filters  = document.querySelectorAll('.gallery-filters button');
+  const currentEl = document.getElementById('carouselCurrent');
+  const totalEl   = document.getElementById('carouselTotal');
+  if (!track) return;
+
+  const ALL_SLIDES = Array.from(track.children);
+  let visible = ALL_SLIDES.slice();   // currently filtered set
+  let index   = 0;
+  let autoplayTimer = null;
+  const AUTOPLAY_MS = 5500;
+
+  function buildDots() {
+    dotsWrap.innerHTML = '';
+    visible.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'carousel__dot' + (i === index ? ' is-active' : '');
+      d.setAttribute('role', 'tab');
+      d.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      d.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(d);
+    });
+  }
+
+  function applyState() {
+    // Hide non-visible slides; show visible ones
+    ALL_SLIDES.forEach(s => s.classList.remove('is-active', 'is-prev', 'is-next', 'is-hidden'));
+    ALL_SLIDES.forEach(s => {
+      if (!visible.includes(s)) s.classList.add('is-hidden');
+    });
+    // Mark active / neighbor slides
+    const len = visible.length;
+    if (len === 0) return;
+    visible[index].classList.add('is-active');
+    visible[(index - 1 + len) % len].classList.add('is-prev');
+    visible[(index + 1) % len].classList.add('is-next');
+
+    // Dots
+    dotsWrap.querySelectorAll('.carousel__dot').forEach((d, i) => {
+      d.classList.toggle('is-active', i === index);
+    });
+
+    // Counter
+    currentEl.textContent = String(index + 1);
+    totalEl.textContent   = String(len);
+  }
+
+  function goTo(i) {
+    if (visible.length === 0) return;
+    index = ((i % visible.length) + visible.length) % visible.length;
+    applyState();
+    restartAutoplay();
+  }
+  const next = () => goTo(index + 1);
+  const prev = () => goTo(index - 1);
+
+  function setFilter(cat) {
+    visible = (cat === 'all')
+      ? ALL_SLIDES.slice()
+      : ALL_SLIDES.filter(s => s.dataset.cat === cat);
+    index = 0;
+    buildDots();
+    applyState();
+  }
+
+  // Filter buttons
+  filters.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filters.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      setFilter(btn.dataset.filter);
+    });
+  });
+
+  // Arrows
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  // Click an adjacent (prev/next) slide to jump to it
+  track.addEventListener('click', e => {
+    const slide = e.target.closest('.carousel__slide');
+    if (!slide) return;
+    if (slide.classList.contains('is-prev')) prev();
+    else if (slide.classList.contains('is-next')) next();
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  prev();
+    if (e.key === 'ArrowRight') next();
+  });
+
+  // Touch swipe
+  let touchX = null;
+  track.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend',   e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 50) (dx < 0 ? next : prev)();
+    touchX = null;
+  });
+
+  // Autoplay (pause on hover/focus)
+  function startAutoplay()   { autoplayTimer = setInterval(next, AUTOPLAY_MS); }
+  function stopAutoplay()    { clearInterval(autoplayTimer); autoplayTimer = null; }
+  function restartAutoplay() { stopAutoplay(); startAutoplay(); }
+
+  const carousel = document.getElementById('galleryCarousel');
+  carousel.addEventListener('mouseenter', stopAutoplay);
+  carousel.addEventListener('mouseleave', startAutoplay);
+  carousel.addEventListener('focusin',   stopAutoplay);
+  carousel.addEventListener('focusout',  startAutoplay);
+
+  // Init
+  buildDots();
+  applyState();
+  startAutoplay();
+})();
+</script>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div>
+        <div class="footer__brand">
+          <img src="images/logo.png" alt="">
+          <span><strong>High Class</strong> · <span>Limousine</span></span>
+        </div>
+        <div class="footer__tagline">Class Isn't Extinct.</div>
+        <p class="footer__desc">Luxury limousine service based in Vernal, Utah. Serving the Uintah Basin, Roosevelt, Duchesne, Dinosaur National Monument, and beyond.</p>
+      </div>
+      <div>
+        <h5>Explore</h5>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Services</h5>
+        <ul>
+          <li><a href="weddings.html">Weddings</a></li>
+          <li><a href="prom.html">Proms</a></li>
+          <li><a href="airport.html">Airport</a></li>
+          <li><a href="corporate.html">Corporate</a></li>
+          <li><a href="parties.html">Parties</a></li>
+          <li><a href="tours.html">Tours</a></li>
+        </ul>
+      </div>
+      <div class="footer__contact">
+        <h5>Contact</h5>
+        <p><a href="tel:+14352199447">(435) 219-9447</a></p>
+        <p><a href="mailto:info@highclasslimousineservices.com">info@highclasslimousineservices.com</a></p>
+        <p>Vernal, UT 84078<br>Uintah Basin · Utah</p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div>© <span id="year">2026</span> High Class Limousine Services. All rights reserved.</div>
+      <div class="footer__bottom__links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="sitemap.xml">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<a href="tel:+14352199447" class="floating-call" aria-label="Call now">☏</a>
+
+<!-- CUSTOM CURSOR (desktop only) -->
+<div class="cursor"></div>
+<div class="cursor-ring"></div>
+
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<script src="main.js" defer></script>
+</body>
+</html>
