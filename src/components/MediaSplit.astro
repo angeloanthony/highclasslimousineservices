@@ -1,0 +1,76 @@
+---
+interface Props {
+  image: string;
+  alt: string;
+  eyebrow?: string;
+  title?: string;
+  titleScript?: string;
+  /** Second heading line after a <br>, e.g. "…isn't the trip." / "It's the memory." */
+  titleTail?: string;
+  /** Gold script line under the copy, e.g. "— Class Isn't Extinct." */
+  signature?: string;
+  /** Gold ribbon over the photo (homepage "The · High · Class · Experience"). */
+  badge?: string;
+  /**
+   * Corner brackets + hover "View" label. The About page has them; the
+   * homepage's experience band deliberately does not.
+   */
+  decorated?: boolean;
+  marginTop?: string;
+}
+
+const {
+  image,
+  alt,
+  eyebrow,
+  title,
+  titleScript,
+  titleTail,
+  signature,
+  badge,
+  decorated = true,
+  marginTop,
+} = Astro.props;
+---
+
+<div class="experience__grid" style={marginTop ? `margin-top:${marginTop};` : undefined}>
+  <div class="experience__media reveal-left">
+    <img src={image} alt={alt} loading="lazy" decoding="async" />
+    {badge && <div class="experience__badge">{badge}</div>}
+    {
+      decorated && (
+        <>
+          <span class="corner tl" />
+          <span class="corner tr" />
+          <span class="corner bl" />
+          <span class="corner br" />
+          <span class="view-label">View</span>
+        </>
+      )
+    }
+  </div>
+  <div class="experience__text reveal-right">
+    {eyebrow && <div class="eyebrow">{eyebrow}</div>}
+    {
+      title && (
+        <h2>
+          {title}
+          {titleScript && (
+            <>
+              {' '}
+              <span class="italic-script gold-text">{titleScript}</span>
+            </>
+          )}
+          {titleTail && (
+            <>
+              <br />
+              {titleTail}
+            </>
+          )}
+        </h2>
+      )
+    }
+    <slot />
+    {signature && <div class="experience__sig">{signature}</div>}
+  </div>
+</div>

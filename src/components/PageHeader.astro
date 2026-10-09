@@ -1,0 +1,45 @@
+---
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  /** Plain leading part of the H1. */
+  title: string;
+  /** Trailing part rendered in the gold italic script face. */
+  titleScript?: string;
+  tagline?: string;
+  crumbs?: Crumb[];
+}
+
+const { title, titleScript, tagline, crumbs = [] } = Astro.props;
+---
+
+<section class="page-header">
+  <div class="container">
+    {
+      crumbs.length > 0 && (
+        <div class="breadcrumb">
+          {crumbs.map((c, i) => (
+            <>
+              {c.href ? <a href={c.href}>{c.label}</a> : c.label}
+              {/* Legacy markup was `<span>/</span> ` — the trailing space is
+                  what separates the crumbs visually. */}
+              {i < crumbs.length - 1 && (
+                <>
+                  <span>/</span>{' '}
+                </>
+              )}
+            </>
+          ))}
+        </div>
+      )
+    }
+    <h1>
+      {title}{' '}
+      {titleScript && <span class="italic-script gold-text">{titleScript}</span>}
+    </h1>
+    {tagline && <p>{tagline}</p>}
+  </div>
+</section>

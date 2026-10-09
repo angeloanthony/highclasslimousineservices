@@ -1,0 +1,85 @@
+---
+import Seo from '../components/Seo.astro';
+import TopBar from '../components/TopBar.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../lib/site.js';
+
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogImage?: string;
+  ogType?: string;
+  noindex?: boolean;
+  schema?: unknown;
+}
+
+const { title, description, path, ogImage, ogType, noindex, schema } =
+  Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/webp" href="/images/favicon.webp" />
+
+    <Seo
+      title={title}
+      description={description}
+      path={path}
+      ogImage={ogImage}
+      ogType={ogType}
+      noindex={noindex}
+      schema={schema}
+    />
+
+    <slot name="head" />
+
+    <!--
+      The scroll-reveal classes start at opacity:0 and are only un-hidden by
+      the IntersectionObserver in site.js. Without this, a visitor with
+      JavaScript disabled sees a mostly blank page. Progressive enhancement:
+      no script, no animation, but all the content.
+    -->
+    <noscript>
+      <style>
+        .reveal,
+        .reveal-left,
+        .reveal-right,
+        .reveal-scale,
+        .reveal-stagger > * {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      </style>
+    </noscript>
+  </head>
+
+  <body>
+    <TopBar />
+    <Nav />
+
+    <!-- Pagefind indexes this region only, so nav/footer boilerplate stays
+         out of every search result. -->
+    <main data-pagefind-body>
+      <slot />
+    </main>
+
+    <Footer />
+
+    <a href={SITE.phoneHref} class="floating-call" aria-label="Call now">☏</a>
+
+    <!-- CUSTOM CURSOR (desktop only) -->
+    <div class="cursor"></div>
+    <div class="cursor-ring"></div>
+
+    <script>
+      import '../scripts/site.js';
+    </script>
+  </body>
+</html>

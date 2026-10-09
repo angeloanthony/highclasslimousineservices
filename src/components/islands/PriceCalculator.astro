@@ -1,0 +1,624 @@
+---
+/**
+ * Interactive quote estimator. An island: the rest of the pricing page is
+ * static HTML and only this widget ships JavaScript.
+ */
+import { SITE } from '../../lib/site.js';
+---
+
+<section class="hc-calc-section" id="price-calculator">
+  <div class="container">
+    <div class="section-head reveal" style="text-align:center;">
+      <span class="eyebrow gold-text">Build Your Quote</span>
+      <h2>Your trip, <span class="italic-script gold-text">your number.</span></h2>
+      <p style="max-width:680px;margin:1rem auto 0;color:var(--ink-soft);">
+        Pick the service, dial in the details, and we'll show you the live
+        estimate range. Every number includes the 18% gratuity — no surprises at
+        the end.
+      </p>
+    </div>
+
+    <div class="hc-calc reveal" id="hc-calc">
+      <div class="hc-calc__inputs">
+        <div class="hc-calc__field">
+          <span class="hc-calc__label" id="hc-svc-label">Service Type</span>
+          <div
+            class="hc-calc__service-grid"
+            role="radiogroup"
+            aria-labelledby="hc-svc-label"
+            id="hc-svc-grid"
+          >
+            <button type="button" class="hc-calc__service is-active" data-service="wedding">Wedding</button>
+            <button type="button" class="hc-calc__service" data-service="prom">Prom</button>
+            <button type="button" class="hc-calc__service" data-service="airport">Airport</button>
+            <button type="button" class="hc-calc__service" data-service="party">Party</button>
+            <button type="button" class="hc-calc__service" data-service="tour">Tour</button>
+            <button type="button" class="hc-calc__service" data-service="hourly">Hourly</button>
+          </div>
+        </div>
+
+        <div id="hc-dynamic"></div>
+
+        <div class="hc-calc__field">
+          <span class="hc-calc__label" id="hc-day-label">Day of Week</span>
+          <div
+            class="hc-calc__pill-row"
+            role="radiogroup"
+            aria-labelledby="hc-day-label"
+            id="hc-day-row"
+          >
+            <button type="button" class="hc-calc__pill is-active" data-day="weekday">Sun–Thu</button>
+            <button type="button" class="hc-calc__pill" data-day="friday">Friday</button>
+            <button type="button" class="hc-calc__pill" data-day="saturday">Saturday</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="hc-calc__output">
+        <span class="hc-calc__output-eyebrow">Estimated Total</span>
+        <span class="hc-calc__service-name-display" id="hc-svc-name">Wedding Limousine</span>
+        <div class="hc-calc__total" id="hc-total" aria-live="polite">
+          <span class="hc-calc__total-currency">$</span><span id="hc-low">750</span>
+          <span class="hc-calc__total-divider">–</span>
+          <span class="hc-calc__total-currency">$</span><span id="hc-high">1,000</span>
+        </div>
+        <div class="hc-calc__includes">
+          <span class="hc-calc__check">✓</span> 18% gratuity included
+        </div>
+        <ul class="hc-calc__breakdown" id="hc-breakdown"></ul>
+        <a href="/contact#quote" class="btn hc-calc__cta" id="hc-cta">
+          Reserve This Quote <span class="btn__arrow">→</span>
+        </a>
+        <p class="hc-calc__disclaimer">
+          Estimate range based on listed factors. Final quote confirmed at
+          booking. Call <a href={SITE.phoneHref} style="color:var(--gold-bright);">{SITE.phone}</a> for exact pricing.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /* Global rather than scoped: the inputs column is rebuilt by JS at runtime,
+     so those nodes never receive Astro's scope attribute. */
+  .hc-calc-section { padding: 5rem 0; background: var(--paper); }
+  .hc-calc-section .section-head h2 { letter-spacing: -0.01em; }
+  .hc-calc-section .section-head p { font-family: var(--font-accent); font-size: 1.15rem; line-height: 1.55; }
+
+  .hc-calc {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 0;
+    margin: 3rem auto 0;
+    max-width: 1100px;
+    background: var(--ivory);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(184, 157, 94, 0.18);
+    position: relative;
+  }
+  .hc-calc::before, .hc-calc::after {
+    content: '';
+    position: absolute;
+    width: 28px; height: 28px;
+    border: 1px solid var(--gold);
+    pointer-events: none;
+  }
+  .hc-calc::before { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+  .hc-calc::after { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+  .hc-calc__inputs { padding: 2.5rem 2.25rem; }
+  .hc-calc__output {
+    padding: 2.5rem 2.25rem;
+    background:
+      radial-gradient(ellipse at top right, rgba(184, 157, 94, 0.18) 0%, transparent 60%),
+      linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
+    color: var(--ivory);
+    position: relative;
+  }
+  .hc-calc__output::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(180deg, var(--gold-bright) 0%, var(--gold-deep) 100%);
+  }
+
+  @media (max-width: 768px) {
+    .hc-calc { grid-template-columns: 1fr; }
+    .hc-calc__output::before { width: 100%; height: 3px; }
+    .hc-calc__inputs { padding: 1.75rem 1.25rem; }
+    .hc-calc__output { padding: 1.75rem 1.25rem; }
+  }
+
+  .hc-calc__field { margin-bottom: 1.65rem; }
+  .hc-calc__label {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 0.65rem;
+    font-weight: 600;
+    opacity: 0.75;
+  }
+
+  .hc-calc__service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.45rem;
+  }
+  .hc-calc__service {
+    background: var(--paper);
+    border: 1px solid rgba(15, 22, 38, 0.12);
+    padding: 0.85rem 0.4rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.25s var(--ease);
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+  .hc-calc__service:hover {
+    border-color: var(--gold);
+    transform: translateY(-1px);
+  }
+  .hc-calc__service.is-active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--gold-bright);
+    box-shadow: 0 8px 22px -8px rgba(15, 22, 38, 0.45);
+  }
+
+  .hc-calc__pill-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .hc-calc__pill {
+    background: var(--paper);
+    border: 1px solid rgba(15, 22, 38, 0.12);
+    padding: 0.6rem 1.05rem;
+    font-family: var(--font-body);
+    font-size: 0.86rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 999px;
+    transition: all 0.25s var(--ease);
+    color: var(--ink);
+  }
+  .hc-calc__pill:hover { border-color: var(--gold); }
+  .hc-calc__pill.is-active {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+  }
+
+  .hc-calc__slider-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .hc-calc__slider {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: linear-gradient(to right, var(--gold) var(--pct, 50%), rgba(15,22,38,0.12) var(--pct, 50%));
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+  }
+  .hc-calc__slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--gold);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s var(--ease);
+  }
+  .hc-calc__slider::-webkit-slider-thumb:hover { transform: scale(1.18); }
+  .hc-calc__slider::-moz-range-thumb {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--gold);
+    cursor: pointer;
+  }
+  .hc-calc__slider-value {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--gold-deep);
+    min-width: 75px;
+    text-align: right;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .hc-calc__output-eyebrow {
+    display: block;
+    margin-bottom: 0.6rem;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    font-weight: 600;
+  }
+  .hc-calc__service-name-display {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--gold-soft);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .hc-calc__total {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 4.5vw, 3.2rem);
+    color: var(--ivory);
+    line-height: 1.05;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    transition: opacity 0.25s var(--ease);
+  }
+  .hc-calc__total.is-updating { opacity: 0.4; }
+  .hc-calc__total-currency {
+    font-size: 0.55em;
+    color: var(--gold);
+    font-weight: 400;
+    margin-right: 0.05em;
+  }
+  .hc-calc__total-divider {
+    font-size: 0.5em;
+    color: var(--gold);
+    margin: 0 0.35em;
+    font-weight: 300;
+  }
+
+  .hc-calc__includes {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--gold-soft);
+    background: rgba(184, 157, 94, 0.12);
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(184, 157, 94, 0.22);
+    letter-spacing: 0.04em;
+  }
+  .hc-calc__check {
+    color: var(--gold-bright);
+    font-weight: bold;
+    font-size: 0.85rem;
+  }
+
+  .hc-calc__breakdown {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .hc-calc__breakdown li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: rgba(248, 246, 242, 0.78);
+  }
+  .hc-calc__breakdown li span:last-child {
+    color: var(--gold-bright);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hc-calc__cta {
+    width: 100%;
+    justify-content: center;
+    background: var(--gold);
+    color: var(--ink);
+    border-color: var(--gold);
+  }
+  .hc-calc__cta:hover {
+    background: var(--gold-bright);
+    border-color: var(--gold-bright);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 36px -10px var(--gold-glow);
+  }
+
+  .hc-calc__disclaimer {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    color: rgba(248, 246, 242, 0.45);
+    text-align: center;
+    margin-top: 0.85rem;
+    line-height: 1.5;
+  }
+</style>
+
+<script>
+  const PRICING = {
+    wedding: {
+      label: 'Wedding Limousine',
+      mode: 'hourly',
+      hours: { min: 3, max: 10, default: 5 },
+      vehicles: { 8: [125, 150], 14: [155, 185] },
+    },
+    prom: {
+      label: 'Prom & School Events',
+      mode: 'hourly',
+      hours: { min: 4, max: 6, default: 4 },
+      vehicles: { 8: [110, 145], 14: [140, 175] },
+    },
+    airport: {
+      label: 'Airport Transfer',
+      mode: 'flat',
+      routes: {
+        vernal: { name: 'Vernal → SLC', oneWay: [350, 500] },
+        roosevelt: { name: 'Roosevelt → SLC', oneWay: [300, 350] },
+        duchesne: { name: 'Duchesne → SLC', oneWay: [275, 325] },
+      },
+    },
+    party: {
+      label: 'Bachelorette / Party',
+      mode: 'hourly',
+      hours: { min: 3, max: 8, default: 5 },
+      vehicles: { 8: [125, 165], 14: [155, 200] },
+    },
+    tour: {
+      label: 'Scenic Tour',
+      mode: 'tour',
+      tours: {
+        sunset: { name: 'Sunset (2-3 hours)', range: [400, 600] },
+        half: { name: 'Half-day (4-5 hours)', range: [675, 1000] },
+        full: { name: 'Full-day (8 hours)', range: [1000, 1600] },
+      },
+    },
+    hourly: {
+      label: 'Hourly Service',
+      mode: 'hourly',
+      hours: { min: 3, max: 10, default: 4 },
+      vehicles: { 8: [135, 165], 14: [165, 200] },
+    },
+  };
+
+  const DAY_MULT = { weekday: 1.0, friday: 1.1, saturday: 1.18 };
+
+  // Peak season (Apr–Sept) bumps base 8%.
+  const month = new Date().getMonth() + 1;
+  const inSeason = month >= 4 && month <= 9;
+  const SEASON_MULT = inSeason ? 1.08 : 1.0;
+  const SEASON_LABEL = inSeason ? 'Peak season (Apr–Sept)' : 'Off-season';
+
+  const state = {
+    service: 'wedding',
+    hours: 5,
+    vehicle: 8,
+    day: 'weekday',
+    route: 'vernal',
+    tripType: 'oneway',
+    tour: 'half',
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const dynamic = $('hc-dynamic');
+  const totalEl = $('hc-total');
+
+  const formatNumber = (n) => Math.round(n).toLocaleString('en-US');
+
+  function buildDynamic() {
+    const svc = PRICING[state.service];
+    let html = '';
+
+    if (svc.mode === 'hourly') {
+      const h = svc.hours;
+      if (state.hours < h.min) state.hours = h.min;
+      if (state.hours > h.max) state.hours = h.max;
+      const pct = ((state.hours - h.min) / (h.max - h.min)) * 100;
+
+      html += `
+        <div class="hc-calc__field">
+          <label class="hc-calc__label" for="hc-hours">Hours of Service</label>
+          <div class="hc-calc__slider-wrap">
+            <input type="range" min="${h.min}" max="${h.max}" value="${state.hours}" class="hc-calc__slider" id="hc-hours" style="--pct:${pct}%">
+            <span class="hc-calc__slider-value" id="hc-hours-val">${state.hours} hrs</span>
+          </div>
+        </div>
+        <div class="hc-calc__field">
+          <span class="hc-calc__label" id="hc-veh-label">Vehicle Size</span>
+          <div class="hc-calc__pill-row" role="radiogroup" aria-labelledby="hc-veh-label" id="hc-veh-row">
+            <button type="button" class="hc-calc__pill ${state.vehicle === 8 ? 'is-active' : ''}" data-vehicle="8">8-Passenger Stretch</button>
+            <button type="button" class="hc-calc__pill ${state.vehicle === 14 ? 'is-active' : ''}" data-vehicle="14">14-Passenger Stretch</button>
+          </div>
+        </div>
+      `;
+    } else if (svc.mode === 'flat') {
+      html += `
+        <div class="hc-calc__field">
+          <span class="hc-calc__label" id="hc-route-label">Pickup Location</span>
+          <div class="hc-calc__pill-row" role="radiogroup" aria-labelledby="hc-route-label" id="hc-route-row">
+            ${Object.entries(svc.routes)
+              .map(
+                ([key, r]) =>
+                  `<button type="button" class="hc-calc__pill ${state.route === key ? 'is-active' : ''}" data-route="${key}">${r.name}</button>`
+              )
+              .join('')}
+          </div>
+        </div>
+        <div class="hc-calc__field">
+          <span class="hc-calc__label" id="hc-trip-label">Trip Type</span>
+          <div class="hc-calc__pill-row" role="radiogroup" aria-labelledby="hc-trip-label" id="hc-trip-row">
+            <button type="button" class="hc-calc__pill ${state.tripType === 'oneway' ? 'is-active' : ''}" data-trip="oneway">One-Way</button>
+            <button type="button" class="hc-calc__pill ${state.tripType === 'roundtrip' ? 'is-active' : ''}" data-trip="roundtrip">Round-Trip</button>
+          </div>
+        </div>
+      `;
+    } else if (svc.mode === 'tour') {
+      html += `
+        <div class="hc-calc__field">
+          <span class="hc-calc__label" id="hc-tour-label">Tour Length</span>
+          <div class="hc-calc__pill-row" role="radiogroup" aria-labelledby="hc-tour-label" id="hc-tour-row">
+            ${Object.entries(svc.tours)
+              .map(
+                ([key, t]) =>
+                  `<button type="button" class="hc-calc__pill ${state.tour === key ? 'is-active' : ''}" data-tour="${key}">${t.name}</button>`
+              )
+              .join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    dynamic.innerHTML = html;
+    wireDynamicEvents();
+  }
+
+  /**
+   * Single-select pill row: activate the clicked button, store, recalc.
+   * `dataKey` is the data-* attribute; `stateKey` is where it lands in state
+   * (they differ for the trip row, which writes state.tripType).
+   */
+  function wirePillRow(rowId, dataKey, stateKey = dataKey, transform = (v) => v) {
+    document.querySelectorAll(`#${rowId} .hc-calc__pill`).forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document
+          .querySelectorAll(`#${rowId} .hc-calc__pill`)
+          .forEach((b) => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        state[stateKey] = transform(btn.dataset[dataKey]);
+        recalc();
+      });
+    });
+  }
+
+  function wireDynamicEvents() {
+    const slider = $('hc-hours');
+    if (slider) {
+      slider.addEventListener('input', (e) => {
+        state.hours = parseInt(e.target.value, 10);
+        const h = PRICING[state.service].hours;
+        const pct = ((state.hours - h.min) / (h.max - h.min)) * 100;
+        slider.style.setProperty('--pct', pct + '%');
+        $('hc-hours-val').textContent = state.hours + ' hrs';
+        recalc();
+      });
+    }
+    wirePillRow('hc-veh-row', 'vehicle', 'vehicle', (v) => parseInt(v, 10));
+    wirePillRow('hc-route-row', 'route');
+    wirePillRow('hc-trip-row', 'trip', 'tripType');
+    wirePillRow('hc-tour-row', 'tour');
+  }
+
+  function recalc() {
+    const svc = PRICING[state.service];
+    let lo, hi;
+    const breakdown = [];
+
+    if (svc.mode === 'hourly') {
+      const [bLo, bHi] = svc.vehicles[state.vehicle];
+      lo = bLo * state.hours;
+      hi = bHi * state.hours;
+      breakdown.push({
+        label: `${state.hours} hrs × ${state.vehicle}-pass stretch`,
+        value: `$${formatNumber(lo)}–$${formatNumber(hi)}`,
+      });
+    } else if (svc.mode === 'flat') {
+      const route = svc.routes[state.route];
+      let [bLo, bHi] = route.oneWay;
+      if (state.tripType === 'roundtrip') {
+        bLo = Math.round(bLo * 1.8);
+        bHi = Math.round(bHi * 1.8);
+      }
+      breakdown.push({
+        label: `${route.name} (${state.tripType === 'oneway' ? 'one-way' : 'round-trip'})`,
+        value: `$${formatNumber(bLo)}–$${formatNumber(bHi)}`,
+      });
+      lo = bLo;
+      hi = bHi;
+    } else if (svc.mode === 'tour') {
+      const tour = svc.tours[state.tour];
+      const [bLo, bHi] = tour.range;
+      breakdown.push({
+        label: tour.name,
+        value: `$${formatNumber(bLo)}–$${formatNumber(bHi)}`,
+      });
+      lo = bLo;
+      hi = bHi;
+    }
+
+    // Day surcharge — skipped for flat-rate airport runs, which are already flat.
+    const dayMult = DAY_MULT[state.day];
+    if (svc.mode !== 'flat' && dayMult > 1.0) {
+      breakdown.push({
+        label:
+          state.day === 'friday'
+            ? 'Friday surcharge (+10%)'
+            : 'Saturday surcharge (+18%)',
+        value: `+$${formatNumber(lo * (dayMult - 1))}–$${formatNumber(hi * (dayMult - 1))}`,
+      });
+      lo *= dayMult;
+      hi *= dayMult;
+    }
+
+    if (svc.mode !== 'flat' && SEASON_MULT > 1.0) {
+      const surchargeLo = (lo * (SEASON_MULT - 1)) / SEASON_MULT;
+      const surchargeHi = (hi * (SEASON_MULT - 1)) / SEASON_MULT;
+      lo *= SEASON_MULT;
+      hi *= SEASON_MULT;
+      breakdown.push({
+        label: SEASON_LABEL + ' (+8%)',
+        value: `+$${formatNumber(surchargeLo)}–$${formatNumber(surchargeHi)}`,
+      });
+    }
+
+    breakdown.push({ label: '18% gratuity', value: 'Included' });
+
+    totalEl.classList.add('is-updating');
+    setTimeout(() => {
+      $('hc-low').textContent = formatNumber(lo);
+      $('hc-high').textContent = formatNumber(hi);
+      $('hc-svc-name').textContent = svc.label;
+      $('hc-breakdown').innerHTML = breakdown
+        .map((b) => `<li><span>${b.label}</span><span>${b.value}</span></li>`)
+        .join('');
+      const params = new URLSearchParams({
+        service: state.service,
+        estimate: `${formatNumber(lo)}-${formatNumber(hi)}`,
+      });
+      $('hc-cta').href = `/contact?${params.toString()}#quote`;
+      totalEl.classList.remove('is-updating');
+    }, 120);
+  }
+
+  document.querySelectorAll('#hc-svc-grid .hc-calc__service').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document
+        .querySelectorAll('#hc-svc-grid .hc-calc__service')
+        .forEach((b) => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      state.service = btn.dataset.service;
+      const svc = PRICING[state.service];
+      if (svc.hours) state.hours = svc.hours.default;
+      buildDynamic();
+      recalc();
+    });
+  });
+
+  wirePillRow('hc-day-row', 'day');
+
+  buildDynamic();
+  recalc();
+</script>

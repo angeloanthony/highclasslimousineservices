@@ -1,0 +1,45 @@
+---
+interface Props {
+  image: string;
+  alt: string;
+  eyebrow?: string;
+  title?: string;
+  titleScript?: string;
+  /** Puts the image on the right (legacy .feature-row--reverse). */
+  reverse?: boolean;
+}
+
+const { image, alt, eyebrow, title, titleScript, reverse = false } =
+  Astro.props;
+
+// The legacy pages alternated the reveal direction so the image and copy slide
+// in from opposite edges.
+const imgReveal = reverse ? 'reveal-right' : 'reveal-left';
+const textReveal = reverse ? 'reveal-left' : 'reveal-right';
+---
+
+<div class:list={['feature-row', reverse && 'feature-row--reverse']}>
+  <div class:list={['feature-row__img', imgReveal]}>
+    <img src={image} alt={alt} loading="lazy" decoding="async" />
+    <span class="corner tl"></span><span class="corner tr"></span>
+    <span class="corner bl"></span><span class="corner br"></span>
+    <span class="view-label">View</span>
+  </div>
+  <div class:list={['feature-row__text', textReveal]}>
+    {eyebrow && <div class="eyebrow">{eyebrow}</div>}
+    {
+      title && (
+        <h2>
+          {title}
+          {titleScript && (
+            <>
+              {' '}
+              <span class="italic-script gold-text">{titleScript}</span>
+            </>
+          )}
+        </h2>
+      )
+    }
+    <slot />
+  </div>
+</div>

@@ -1,0 +1,25 @@
+---
+interface Value {
+  num: string;
+  title: string;
+  body: string;
+}
+
+interface Props {
+  items: Value[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="values-grid reveal-stagger">
+  {
+    items.map((v) => (
+      <div class="value-card">
+        <div class="value-card__num">{v.num}</div>
+        <h3 set:html={v.title} />
+        <p set:html={v.body} />
+      </div>
+    ))
+  }
+</div>

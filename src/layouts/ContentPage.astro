@@ -1,0 +1,38 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import RelatedGrid from '../components/RelatedGrid.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+
+/**
+ * Shared shell for every collection-backed page: services, long-form articles
+ * and the legal pages. The MDX body renders between the page header and the
+ * related-reading / final-CTA chrome.
+ */
+interface Props {
+  data: Record<string, any>;
+}
+
+const { data } = Astro.props;
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  path={data.path}
+  ogImage={data.ogImage}
+  schema={data.schema?.length ? data.schema : undefined}
+>
+  <PageHeader
+    title={data.h1}
+    titleScript={data.h1Script}
+    tagline={data.tagline}
+    crumbs={data.crumbs}
+  />
+
+  <slot />
+
+  <RelatedGrid items={data.related ?? []} />
+
+  {data.cta && <CtaFinal {...data.cta} />}
+</BaseLayout>

@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import GalleryCarousel from '../components/islands/GalleryCarousel.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import { SITE } from '../lib/site.js';
+
+const images = (await getCollection('galleryImages'))
+  .sort((a, b) => a.data.id.localeCompare(b.data.id))
+  .map((e) => e.data);
+
+// The legacy gallery page had no Open Graph tags and no structured data at
+// all — the layout now supplies both.
+const schema = {
+  '@type': 'ImageGallery',
+  name: 'High Class Limousine Services Gallery',
+  url: `${SITE.origin}/gallery`,
+  image: images.map((i) => new URL(i.src, SITE.origin).href),
+};
+---
+
+<BaseLayout
+  title="Gallery | High Class Limousine Services Vernal, Utah"
+  description="Photo gallery of High Class Limousine Services. See our stretch limousine, interior, events, and Vernal, Utah scenery."
+  path="/gallery"
+  schema={schema}
+>
+  <PageHeader
+    title="The"
+    titleScript="Gallery"
+    tagline="The fleet, the interior, the events, and the Vernal scenery we call home."
+    crumbs={[{ label: 'Home', href: '/' }, { label: 'Gallery' }]}
+  />
+
+  <GalleryCarousel images={images} />
+
+  <CtaFinal
+    title="Want to be"
+    titleScript="in the next one?"
+    sub="Book your ride and we'll capture the moment."
+    primaryLabel="Book Now"
+  />
+</BaseLayout>

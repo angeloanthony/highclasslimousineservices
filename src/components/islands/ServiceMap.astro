@@ -1,0 +1,117 @@
+---
+/**
+ * Service-area map for the contact page. Ported from the Leaflet block that
+ * used to live in the shared main.js — every page downloaded that code even
+ * though only this one rendered a map.
+ */
+import { SITE } from '../../lib/site.js';
+---
+
+<div class="map-frame">
+  <div class="map-frame__header">
+    <span class="map-frame__eyebrow">Service Area</span>
+    <span class="map-frame__title">Vernal · Uintah Basin · Utah</span>
+    <span class="map-frame__hint">Click to zoom · Drag to explore</span>
+  </div>
+  <div class="map-frame__inner">
+    <span class="map-frame__corner map-frame__corner--tl"></span>
+    <span class="map-frame__corner map-frame__corner--tr"></span>
+    <span class="map-frame__corner map-frame__corner--bl"></span>
+    <span class="map-frame__corner map-frame__corner--br"></span>
+    <div
+      class="service-map"
+      id="serviceMap"
+      role="application"
+      aria-label="High Class Limousine service area map"
+    >
+    </div>
+  </div>
+  <div class="map-frame__footer">
+    <span>{SITE.name}</span>
+    <span class="map-frame__dot"></span>
+    <span>{SITE.phone}</span>
+    <span class="map-frame__dot"></span>
+    <span>highclasslimousineservices.com</span>
+  </div>
+</div>
+
+<script>
+  import L from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
+
+  const mapEl = document.getElementById('serviceMap');
+
+  if (mapEl) {
+    const map = L.map('serviceMap', {
+      center: [40.455, -109.528],
+      zoom: 8,
+      zoomControl: true,
+      scrollWheelZoom: false, // click the map to enable
+    });
+
+    L.tileLayer(
+      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+      {
+        attribution:
+          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 19,
+      }
+    ).addTo(map);
+
+    const goldIcon = L.divIcon({
+      className: 'map-marker',
+      html: '<div class="map-marker__dot"></div><div class="map-marker__ring"></div>',
+      iconSize: [20, 20],
+      iconAnchor: [10, 10],
+      popupAnchor: [0, -14],
+    });
+    const homeIcon = L.divIcon({
+      className: 'map-marker map-marker--home',
+      html: '<div class="map-marker__dot"></div><div class="map-marker__ring"></div>',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+      popupAnchor: [0, -18],
+    });
+
+    const locations = [
+      { name: 'Vernal, Utah', lat: 40.4555, lng: -109.5287, note: 'Home base — High Class Limousine Services', home: true },
+      { name: 'Roosevelt, Utah', lat: 40.2997, lng: -109.9988, note: 'Uintah Basin service' },
+      { name: 'Duchesne, Utah', lat: 40.163, lng: -110.4007, note: 'Uintah Basin service' },
+      { name: 'Dinosaur, Colorado', lat: 40.243, lng: -109.0148, note: 'Cross-border service' },
+      { name: 'Flaming Gorge', lat: 40.9155, lng: -109.4204, note: 'Scenic tours & recreational runs' },
+      { name: 'Dinosaur National Monument', lat: 40.4375, lng: -108.9869, note: 'Scenic Utah tours' },
+      { name: 'Salt Lake City', lat: 40.7608, lng: -111.891, note: 'SLC International Airport transfers' },
+      { name: 'Price, Utah', lat: 39.5994, lng: -110.8107, note: 'Extended service area' },
+      { name: 'Moab, Utah', lat: 38.5733, lng: -109.5498, note: 'Extended service area' },
+    ];
+
+    locations.forEach((loc) => {
+      L.marker([loc.lat, loc.lng], { icon: loc.home ? homeIcon : goldIcon })
+        .bindPopup(
+          `<div class="map-popup"><strong>${loc.name}</strong><span>${loc.note}</span></div>`,
+          { className: 'map-popup-wrap', maxWidth: 220 }
+        )
+        .addTo(map);
+    });
+
+    // Dashed gold service-area polygon
+    L.polygon(
+      [
+        [41.2, -110.8], [41.2, -108.5], [40.1, -108.5],
+        [38.3, -109.8], [39.3, -111.6], [40.8, -112.1], [41.0, -111.5],
+      ],
+      {
+        color: '#d4b97f',
+        fillColor: '#b89d5e',
+        fillOpacity: 0.07,
+        weight: 1.5,
+        dashArray: '6 4',
+        opacity: 0.45,
+      }
+    ).addTo(map);
+
+    map.on('click', () => map.scrollWheelZoom.enable());
+    map.on('mouseout', () => map.scrollWheelZoom.disable());
+  }
+</script>

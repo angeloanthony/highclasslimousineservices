@@ -1,0 +1,36 @@
+---
+/**
+ * Two-column prose band. The legacy long-form pages reused the `.feature-row`
+ * grid for this, with two text columns instead of the usual image + copy.
+ */
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  titleScript?: string;
+}
+
+const { eyebrow, title, titleScript } = Astro.props;
+---
+
+<div class="feature-row">
+  <div class="reveal-left">
+    {eyebrow && <span class="eyebrow gold-text">{eyebrow}</span>}
+    {
+      title && (
+        <h2>
+          {title}
+          {titleScript && (
+            <>
+              {' '}
+              <span class="italic-script gold-text">{titleScript}</span>
+            </>
+          )}
+        </h2>
+      )
+    }
+    <slot name="left" />
+  </div>
+  <div class="reveal-right">
+    <slot name="right" />
+  </div>
+</div>

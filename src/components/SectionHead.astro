@@ -1,0 +1,44 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  titleScript?: string;
+  /** Where the script span sits relative to the plain title text. */
+  scriptPosition?: 'after' | 'before';
+  lead?: string;
+  center?: boolean;
+}
+
+const {
+  eyebrow,
+  title,
+  titleScript,
+  scriptPosition = 'after',
+  lead,
+  center = false,
+} = Astro.props;
+---
+
+<div class="section-head reveal" style={center ? 'text-align:center;' : undefined}>
+  {eyebrow && <div class="eyebrow">{eyebrow}</div>}
+  <h2>
+    {
+      scriptPosition === 'before' && titleScript && (
+        <>
+          <span class="italic-script gold-text">{titleScript}</span>{' '}
+        </>
+      )
+    }
+    {title}
+    {
+      scriptPosition === 'after' && titleScript && (
+        <>
+          {' '}
+          <span class="italic-script gold-text">{titleScript}</span>
+        </>
+      )
+    }
+  </h2>
+  {lead && <p>{lead}</p>}
+  <slot />
+</div>
