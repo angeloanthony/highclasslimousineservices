@@ -1,0 +1,66 @@
+---
+import { SITE } from '../lib/site.js';
+
+const here = Astro.url.pathname === '/' ? '/' : Astro.url.pathname;
+const isCurrent = (href: string) => href === here;
+---
+
+<header class="nav">
+  <div class="nav__inner">
+    <a href="/" class="nav__brand">
+      <img src="/images/logo.png" alt={SITE.name} width="48" height="48" />
+      <span
+        ><strong>{SITE.shortName}</strong> · <span>Limousine</span></span
+      >
+    </a>
+
+    <button
+      class="nav__toggle"
+      type="button"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+    >
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav__menu" id="nav-menu">
+      {
+        SITE.nav.map((item) =>
+          item.children ? (
+            <li class="has-drop">
+              <a
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+              <ul class="nav__drop">
+                {item.children.map((child) => (
+                  <li>
+                    <a
+                      href={child.href}
+                      aria-current={isCurrent(child.href) ? 'page' : undefined}
+                    >
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          )
+        )
+      }
+      <li><a href="/contact#quote" class="nav__cta">Book Now</a></li>
+    </ul>
+  </div>
+</header>

@@ -1,0 +1,23 @@
+---
+interface QA {
+  q: string;
+  a: string;
+}
+
+interface Props {
+  items: QA[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="faq-list reveal-stagger">
+  {
+    items.map((item) => (
+      <details class="faq-item">
+        <summary set:html={item.q} />
+        <div class="faq-answer" set:html={item.a} />
+      </details>
+    ))
+  }
+</div>

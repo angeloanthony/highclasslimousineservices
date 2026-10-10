@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../lib/site.js';
+
+/**
+ * The legacy 404 shipped its own orphaned chrome (`site-header`, `site-footer`)
+ * whose classes don't exist in the stylesheet, so it rendered unstyled. Same
+ * copy and links, now on the real site chrome.
+ */
+---
+
+<BaseLayout
+  title="Page Not Found | High Class Limousine Services"
+  description="The page you're looking for took a detour. Find your way back to High Class Limousine Services in Vernal, Utah."
+  path="/404"
+  noindex
+>
+  <section class="err-wrap">
+    <div class="inner reveal">
+      <h1>404 <span class="gold-text">·</span> Off the Map</h1>
+      <p>
+        The page you're looking for took a detour. Even our chauffeurs lose a
+        turn now and then. Let's get you back on route.
+      </p>
+
+      <div class="err-links">
+        <a href="/">Home</a>
+        <a href="/limousine-service-vernal-utah">All Services</a>
+        <a href="/contact">Book a Ride</a>
+        <a href={SITE.phoneHref}>Call {SITE.phone}</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .err-wrap {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 1.5rem;
+    background: var(--ink);
+    color: var(--ivory);
+  }
+  .inner { max-width: 640px; }
+  h1 {
+    font-size: clamp(3rem, 8vw, 5rem);
+    margin: 0 0 1rem;
+    letter-spacing: -0.02em;
+    color: var(--ivory);
+  }
+  p {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    margin: 0 0 2rem;
+    opacity: 0.9;
+  }
+  .err-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  .err-links a {
+    color: var(--gold-bright);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(212, 185, 127, 0.4);
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+  }
+  .err-links a:hover { border-bottom-color: var(--gold-bright); }
+</style>

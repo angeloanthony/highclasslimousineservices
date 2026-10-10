@@ -1,0 +1,43 @@
+---
+interface Props {
+  /** Two-digit ordinal shown above the heading, e.g. "01". */
+  num?: string;
+  title: string;
+  /** When set the whole card becomes a link (legacy <a class="service-card">). */
+  href?: string;
+  /** Background photo for the linked card variant. */
+  image?: string;
+  linkText?: string;
+}
+
+const { num, title, href, image, linkText } = Astro.props;
+const Tag = href ? 'a' : 'article';
+---
+
+<Tag class="service-card" href={href}>
+  {
+    image && (
+      <div
+        class="service-card__img"
+        style={`background-image:url('${image}')`}
+      />
+    )
+  }
+  {
+    image ? (
+      <div class="service-card__content">
+        {num && <div class="service-card__num">{num}</div>}
+        <h3 set:html={title} />
+        <slot />
+        {linkText && <span class="service-card__link">{linkText} →</span>}
+      </div>
+    ) : (
+      <>
+        {num && <div class="service-card__num">{num}</div>}
+        <h3 set:html={title} />
+        <slot />
+        {linkText && <span class="service-card__link">{linkText} →</span>}
+      </>
+    )
+  }
+</Tag>

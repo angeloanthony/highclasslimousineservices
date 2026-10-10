@@ -1,0 +1,92 @@
+[
+  {
+    "id": "how-many-passengers-fit-in-the-limousine",
+    "q": "How many passengers fit in the limousine?",
+    "a": "Our stretch limousine comfortably seats up to 10 passengers. For larger groups, contact us — we can help coordinate additional transportation or multi-trip arrangements.",
+    "schema": true
+  },
+  {
+    "id": "what-areas-do-you-serve",
+    "q": "What areas do you serve?",
+    "a": "We're based in Vernal, Utah, and regularly serve Roosevelt, Duchesne, Jensen, Dinosaur, and the entire Uintah Basin. We also provide long-distance service to Salt Lake City, Provo, Park City, and major regional airports. Out-of-area trips are welcome — just give us enough notice.",
+    "schema": true
+  },
+  {
+    "id": "how-much-does-a-limo-rental-cost",
+    "q": "How much does a limo rental cost?",
+    "a": "Pricing depends on the service, duration, and distance. Short local rides start in one range; multi-hour events and long-distance airport transfers are quoted separately. Call us or request a quote through our contact form and we'll give you a clear, all-in price with no surprises.",
+    "schema": true
+  },
+  {
+    "id": "how-early-should-i-book",
+    "q": "How early should I book?",
+    "a": "The earlier the better — especially for weddings, proms, and holidays, which often book out weeks in advance. For standard local service, 48–72 hours of notice is usually enough. Same-day bookings are sometimes possible; call to check availability.",
+    "schema": true
+  },
+  {
+    "id": "do-you-offer-airport-transportation-to-salt-lake-city",
+    "q": "Do you offer airport transportation to Salt Lake City?",
+    "a": "Yes, regularly. Vernal to Salt Lake City International (SLC) is one of our most common routes. We track your flight, adjust for delays, and handle door-to-terminal service both directions.",
+    "schema": true
+  },
+  {
+    "id": "can-we-play-our-own-music-in-the-limo",
+    "q": "Can we play our own music in the limo?",
+    "a": "Absolutely. Our sound system accepts Bluetooth and auxiliary input. Bring your playlist, your Spotify, or your aux cable — it's your night.",
+    "schema": true
+  },
+  {
+    "id": "is-alcohol-allowed-in-the-limousine",
+    "q": "Is alcohol allowed in the limousine?",
+    "a": "For guests 21 and over, yes — in appropriate occasions and only in compliance with Utah law. We provide a professional chauffeur, glassware on request, and a safe environment. For events involving minors (including prom and school events), alcohol is strictly prohibited.",
+    "schema": true
+  },
+  {
+    "id": "do-you-offer-prom-transportation",
+    "q": "Do you offer prom transportation?",
+    "a": "Yes. Prom is one of our most popular services. We coordinate with parents, handle multi-stop pickups, and provide a safe, professional, parent-approved alternative to teen driving on prom night.",
+    "schema": true
+  },
+  {
+    "id": "how-far-in-advance-do-you-need-to-know-the-schedule",
+    "q": "How far in advance do you need to know the schedule?",
+    "a": "We recommend finalizing your itinerary at least 48 hours before the event. For weddings and large events, we review the full timeline with you several days in advance so every pickup and drop-off is coordinated.",
+    "schema": true
+  },
+  {
+    "id": "what-happens-if-we-run-over-our-reserved-time",
+    "q": "What happens if we run over our reserved time?",
+    "a": "We'll stay with you as long as availability allows, charged in hourly increments. We'll always tell you when you're approaching your reserved time so there are no surprise charges.",
+    "schema": true
+  },
+  {
+    "id": "do-you-provide-a-decorated-limo-for-weddings",
+    "q": "Do you provide a decorated limo for weddings?",
+    "a": "Yes. We coordinate with you on any decoration requests — ribbons, signage, or ‘Just Married' treatment. We keep it tasteful and consistent with your wedding aesthetic.",
+    "schema": true
+  },
+  {
+    "id": "is-there-a-deposit-required",
+    "q": "Is there a deposit required?",
+    "a": "Yes, a deposit is required to hold your reservation. The amount depends on the service. The remaining balance is due before or on the day of service. Full details are provided when you book.",
+    "schema": true
+  },
+  {
+    "id": "what-s-your-cancellation-policy",
+    "q": "What's your cancellation policy?",
+    "a": "Cancellations made more than 72 hours in advance receive a full refund of the deposit. Cancellations within 72 hours may forfeit the deposit. Weather-related cancellations are handled case by case.",
+    "schema": true
+  },
+  {
+    "id": "are-you-licensed-and-insured",
+    "q": "Are you licensed and insured?",
+    "a": "Yes. We carry commercial limousine insurance and our chauffeurs are fully licensed and professionally trained. You can feel confident about both safety and liability.",
+    "schema": true
+  },
+  {
+    "id": "do-you-do-dinosaur-national-monument-tours",
+    "q": "Do you do Dinosaur National Monument tours?",
+    "a": "Yes — one of our specialty offerings. We offer scenic tours of Dinosaur National Monument, Flaming Gorge, and the surrounding Uintah landscape. See the Tours page for details.",
+    "schema": true
+  }
+]

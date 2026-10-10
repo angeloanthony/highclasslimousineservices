@@ -578,7 +578,7 @@ section { padding: 6rem 0; position: relative; }
 .fleet__showcase::before {
   content: '';
   position: absolute; inset: 0;
-  background-image: url('images/fleet-bg.jpg');
+  background-image: url('/images/fleet-bg.webp');
   background-size: cover;
   background-position: center;
   opacity: 0.5;
@@ -901,7 +901,7 @@ section { padding: 6rem 0; position: relative; }
 .cta-final::before {
   content: '';
   position: absolute; inset: 0;
-  background-image: url('images/cta-bg.jpg');
+  background-image: url('/images/cta-bg.webp');
   background-size: cover; background-position: center;
   opacity: 0.3;
   z-index: -2;
@@ -1026,7 +1026,7 @@ section { padding: 6rem 0; position: relative; }
   color: var(--gold-deep);
   font-family: var(--font-display);
   letter-spacing: 0.2em;
-  background-image: url('images/map-placeholder.jpg');
+  background-image: url('/images/map-placeholder.webp');
   background-size: cover; background-position: center;
   box-shadow: var(--shadow-sm);
 }

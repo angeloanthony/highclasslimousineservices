@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import SectionHead from '../components/SectionHead.astro';
+import StoryBlock from '../components/StoryBlock.astro';
+import MediaSplit from '../components/MediaSplit.astro';
+import ValueGrid from '../components/ValueGrid.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import { SITE, providerNode } from '../lib/site.js';
+
+const values = [
+  {
+    num: '— 01 —',
+    title: 'The Experience',
+    body: 'Every ride should feel cinematic. Lighting, sound, temperature, attention to detail — we obsess over the parts of the trip most companies forget.',
+  },
+  {
+    num: '— 02 —',
+    title: 'Reliability',
+    body: "We arrive early, plan for traffic and weather, and treat your schedule like it's our own. On-time is the baseline, not the goal.",
+  },
+  {
+    num: '— 03 —',
+    title: 'Local Character',
+    body: 'We’re proudly Vernal. The Uintah Basin has character, scenery, and stories — and our service leans into every bit of it.',
+  },
+];
+
+// The legacy About page carried no structured data at all. AboutPage +
+// LimousineService is the obvious win and costs nothing.
+const schema = [
+  {
+    '@type': 'AboutPage',
+    name: 'About High Class Limousine Services',
+    url: `${SITE.origin}/about`,
+    mainEntity: { ...providerNode, areaServed: SITE.areaServed },
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.origin}/` },
+      { '@type': 'ListItem', position: 2, name: 'About', item: `${SITE.origin}/about` },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="About Us | High Class Limousine Services Vernal, Utah"
+  description="Locally owned luxury limousine service in Vernal, Utah. Learn the story behind High Class Limousine and why class isn't extinct in the Uintah Basin."
+  path="/about"
+  schema={schema}
+>
+  <PageHeader
+    title="About"
+    titleScript="High Class"
+    tagline="A locally owned luxury limousine service rooted in the Uintah Basin."
+    crumbs={[{ label: 'Home', href: '/' }, { label: 'About' }]}
+  />
+
+  <Section>
+    <SectionHead
+      eyebrow="Our Story"
+      title="Luxury arrived"
+      titleScript="in dinosaur country."
+    />
+
+    <StoryBlock dropCap reveal={false}>
+      <p>
+        High Class Limousine Services was founded on a simple idea: the people
+        of Vernal and the Uintah Basin deserve the same luxury transportation
+        you'd find in Las Vegas, Park City, or Salt Lake — without driving all
+        the way there to get it.
+      </p>
+      <p>
+        Too many nights out, too many weddings, too many airport runs across
+        Utah were being handled by basic sedans and rideshare apps. We wanted
+        something more memorable. Something cinematic. Something local.
+      </p>
+      <p>
+        So we built it. A stretch limousine with gold mood lighting, a sound
+        system that shakes the leather, and a chauffeur who actually cares about
+        your night. Add the red rock sunsets, the dinosaur country backdrop, and
+        a little personality — and you have something Vernal has never had
+        before.
+      </p>
+    </StoryBlock>
+
+    <MediaSplit
+      image="/images/about-owner.webp"
+      alt="High Class Limousine Services owner with the fleet"
+      eyebrow="Why Vernal"
+      title="Rooted in"
+      titleScript="the Basin."
+      signature="— Class Isn't Extinct."
+      marginTop="5rem"
+    >
+      <p>
+        We live here. We grew up around these canyons, these red rocks, and
+        these roads. When you book with us, you're not calling a national
+        franchise — you're calling neighbors.
+      </p>
+      <p>
+        That also means we know every route. Whether you need an early run to
+        Salt Lake City International, a scenic drive past Dinosaur National
+        Monument, or a quick hop across town for prom photos at Steinaker, we've
+        already made the trip.
+      </p>
+    </MediaSplit>
+  </Section>
+
+  <Section variant="experience">
+    <SectionHead
+      eyebrow="What We Stand For"
+      title="Three things"
+      titleScript="we never compromise on"
+    />
+    <ValueGrid items={values} />
+  </Section>
+
+  <CtaFinal
+    title="Come"
+    titleScript="ride with us."
+    sub="Your next memorable night starts with a phone call."
+  />
+</BaseLayout>

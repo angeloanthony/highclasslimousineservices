@@ -1,0 +1,145 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import SectionHead from '../components/SectionHead.astro';
+import OfferCard from '../components/OfferCard.astro';
+import RelatedGrid from '../components/RelatedGrid.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import { SITE, providerNode } from '../lib/site.js';
+
+// Card copy comes from the service pages themselves, so the hub can never
+// drift from the page it links to.
+const services = (await getCollection('services')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const hubBlurbs: Record<string, string> = {
+  '/weddings':
+    'Elegant transportation for the most important day of your life — bridal party transport, ceremony arrival, and grand getaway.',
+  '/prom':
+    'Safe, stylish, and unforgettable group transportation for prom, homecoming, winter formal, and graduation.',
+  '/airport':
+    'Comfortable transfers to Salt Lake City International, Vernal Regional, and Grand Junction airports.',
+  '/corporate':
+    'Executive transportation for business meetings, VIP clients, and corporate events across the energy sector.',
+  '/parties':
+    'VIP atmosphere with lighting, sound, and pure celebration — birthdays, bachelorettes, anniversaries.',
+  '/tours':
+    'Explore dinosaur country and Utah landscapes in pure luxury — Flaming Gorge, Dinosaur National Monument, and beyond.',
+};
+
+const cardTitles: Record<string, string> = {
+  '/weddings': 'Weddings',
+  '/prom': 'Prom & School Events',
+  '/airport': 'Airport Transportation',
+  '/corporate': 'Corporate Travel',
+  '/parties': 'Parties & Events',
+  '/tours': 'Scenic Utah Tours',
+};
+
+const related = [
+  {
+    href: '/limousine-service-vernal-utah',
+    title: 'Limousine Service in Vernal, Utah',
+    blurb: 'The complete guide to every service we offer across the Basin.',
+  },
+  {
+    href: '/how-much-does-a-limo-cost-in-vernal',
+    title: 'How Much Does a Limo Cost in Vernal',
+    blurb: 'Detailed pricing breakdown for every service we offer.',
+  },
+  {
+    href: '/wedding-limo-uintah-basin',
+    title: 'Wedding Limo in the Uintah Basin',
+    blurb: 'The most-booked service across our coverage area.',
+  },
+];
+
+const schema = [
+  {
+    '@type': 'Service',
+    serviceType: 'Limousine Services Overview',
+    name: 'Limousine Services - Vernal, Utah',
+    description:
+      'Stretch limousine, executive sedan, and SUV chauffeur services in Vernal and the Uintah Basin.',
+    provider: providerNode,
+    areaServed: [
+      { '@type': 'Place', name: 'Vernal, Utah' },
+      { '@type': 'Place', name: 'Uintah Basin, Utah' },
+      { '@type': 'Place', name: 'Roosevelt, Utah' },
+      { '@type': 'Place', name: 'Duchesne, Utah' },
+    ],
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'USD',
+      price: '150',
+      availability: 'https://schema.org/InStock',
+    },
+    url: `${SITE.origin}/services`,
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.origin}/` },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Limousine Services Overview',
+        item: `${SITE.origin}/services`,
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Services | High Class Limousine Vernal, Utah"
+  description="Luxury limousine services in Vernal, Utah — weddings, proms, airport transportation, corporate travel, parties, and scenic Utah tours."
+  path="/services"
+  schema={schema}
+>
+  <PageHeader
+    title="Our"
+    titleScript="Services"
+    tagline="One fleet. One chauffeur. Six unforgettable experiences."
+    crumbs={[{ label: 'Home', href: '/' }, { label: 'Services' }]}
+  />
+
+  <Section variant="offers">
+    <SectionHead
+      eyebrow="What We Offer"
+      title="A limo for"
+      titleScript="every occasion"
+      lead="Whether it's the biggest day of your life or just a Saturday night that deserves to feel like one, we've got you."
+    />
+
+    <div class="offers__grid reveal-stagger">
+      {
+        services.map((s) => (
+          <OfferCard
+            href={s.data.path}
+            num={String(s.data.order).padStart(2, '0')}
+            title={cardTitles[s.data.path] ?? s.data.cardTitle}
+            image={s.data.cardImage}
+            blurb={hubBlurbs[s.data.path] ?? s.data.cardBlurb}
+            badge={s.data.badge}
+            featured={s.data.featured}
+            viewLabel="Explore"
+            linkText="Explore"
+          />
+        ))
+      }
+    </div>
+  </Section>
+
+  <RelatedGrid items={related} />
+
+  <CtaFinal
+    title="Not sure"
+    titleScript="which is right for you?"
+    sub="Tell us your occasion — we'll build the perfect ride around it."
+    primaryLabel="Get a Quote"
+  />
+</BaseLayout>

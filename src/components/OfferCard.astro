@@ -1,0 +1,110 @@
+---
+/**
+ * The photo-led service card used on the homepage and the services hub.
+ * On the homepage it carries pricing; on the hub it's a plain link card.
+ */
+interface Props {
+  href: string;
+  num: string;
+  title: string;
+  image: string;
+  blurb: string;
+  badge?: string;
+  featured?: boolean;
+  viewLabel?: string;
+  /** Homepage variant: price block, feature list, note and button. */
+  price?: string;
+  priceUnit?: string;
+  priceFrom?: string;
+  features?: string[];
+  note?: string;
+  buttonLabel?: string;
+  buttonVariant?: 'gold' | 'outline';
+  /** Hub variant: plain "Explore →" text link. */
+  linkText?: string;
+}
+
+const {
+  href,
+  num,
+  title,
+  image,
+  blurb,
+  badge,
+  featured = false,
+  viewLabel = 'View',
+  price,
+  priceUnit,
+  priceFrom = 'Starting at',
+  features = [],
+  note,
+  buttonLabel,
+  buttonVariant = 'outline',
+  linkText,
+} = Astro.props;
+
+// The hub wraps the whole card in a link; the homepage keeps the card a plain
+// div because it has its own CTA button inside.
+const asLink = Boolean(linkText);
+const Tag = asLink ? 'a' : 'div';
+---
+
+<Tag
+  class:list={['offer-card', featured && 'offer-card--featured']}
+  href={asLink ? href : undefined}
+  style={asLink ? 'text-decoration:none;color:inherit;' : undefined}
+>
+  <div class="offer-card__photo">
+    <div class="offer-card__photo-img" style={`background-image:url('${image}')`}></div>
+    <span class="corner tl"></span><span class="corner tr"></span>
+    <span class="corner bl"></span><span class="corner br"></span>
+    <span class="view-label">{viewLabel}</span>
+    <span class="offer-card__num">{num}</span>
+    {badge && <div class="offer-card__badge">{badge}</div>}
+    <h3 class="offer-card__title">{title}</h3>
+  </div>
+
+  <div class="offer-card__body">
+    {
+      price && (
+        <div class="offer-card__price">
+          <span class="offer-card__from">{priceFrom}</span>
+          <span class="offer-card__amount">
+            {price}
+            {priceUnit && <span class="offer-card__unit">{priceUnit}</span>}
+          </span>
+        </div>
+      )
+    }
+
+    <p>{blurb}</p>
+
+    {
+      features.length > 0 && (
+        <ul class="offer-card__features">
+          {features.map((f) => (
+            <li>{f}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    {note && <div class="offer-card__note">{note}</div>}
+
+    {
+      buttonLabel && (
+        <a href={href} class:list={['btn', `btn--${buttonVariant}`]}>
+          {buttonLabel} <span class="btn__arrow">→</span>
+        </a>
+      )
+    }
+
+    {
+      linkText && (
+        <span class="offer-card__link">
+          {linkText} <span class="btn__arrow">→</span>
+        </span>
+      )
+    }
+  </div>
+</Tag>

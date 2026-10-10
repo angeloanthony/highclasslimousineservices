@@ -1,0 +1,44 @@
+---
+import Section from './Section.astro';
+import SectionHead from './SectionHead.astro';
+
+interface RelatedItem {
+  href: string;
+  title: string;
+  blurb: string;
+}
+
+interface Props {
+  items: RelatedItem[];
+  eyebrow?: string;
+  title?: string;
+  titleScript?: string;
+}
+
+const {
+  items,
+  eyebrow = 'Related Reading',
+  title = 'Keep',
+  titleScript = 'exploring.',
+} = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <Section variant="related">
+      <SectionHead eyebrow={eyebrow} title={title} titleScript={titleScript} />
+      <div class="related__grid reveal-stagger">
+        {items.map((item, i) => (
+          <a href={item.href} class="related-card">
+            <span class="related-card__num">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 set:html={item.title} />
+            <p set:html={item.blurb} />
+            <span class="related-card__arrow">Read More →</span>
+          </a>
+        ))}
+      </div>
+    </Section>
+  )
+}

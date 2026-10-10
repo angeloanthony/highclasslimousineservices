@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import CtaFinal from '../components/CtaFinal.astro';
+import { SITE } from '../lib/site.js';
+
+const faqs = await getCollection('faqs');
+const items = faqs.map((f) => ({ q: f.data.q, a: f.data.a }));
+
+/**
+ * The visible accordion and the FAQPage JSON-LD are now generated from the same
+ * collection. On the legacy page they were two hand-maintained copies of the
+ * same 15 answers.
+ */
+const schema = {
+  '@type': 'FAQPage',
+  mainEntity: faqs
+    .filter((f) => f.data.schema)
+    .map((f) => ({
+      '@type': 'Question',
+      name: f.data.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.data.a },
+    })),
+};
+---
+
+<BaseLayout
+  title="FAQ | High Class Limousine Services Vernal, Utah"
+  description="Answers to common questions about booking a limousine in Vernal, Utah. Pricing, areas served, cancellations, and more."
+  path="/faq"
+  schema={schema}
+>
+  <PageHeader
+    title="Frequently"
+    titleScript="Asked"
+    tagline="Everything you want to know before you book."
+    crumbs={[{ label: 'Home', href: '/' }, { label: 'FAQ' }]}
+  />
+
+  <section>
+    <div class="container">
+      <FaqAccordion items={items} />
+    </div>
+  </section>
+
+  <CtaFinal
+    title="Still have"
+    titleScript="questions?"
+    sub="Give us a call. We'd love to help plan your ride."
+    primaryLabel={`Call ${SITE.phone}`}
+    primaryHref={SITE.phoneHref}
+    secondaryLabel="Send a Message"
+    secondaryHref="/contact"
+  />
+</BaseLayout>

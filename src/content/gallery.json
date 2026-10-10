@@ -1,0 +1,98 @@
+[
+  {
+    "id": "slide-01",
+    "src": "/images/gallery-1.webp",
+    "alt": "Stretch limousine exterior at sunset in Vernal",
+    "category": "exterior",
+    "categoryLabel": "Exterior",
+    "caption": "Sunset Arrival"
+  },
+  {
+    "id": "slide-02",
+    "src": "/images/gallery-2.webp",
+    "alt": "Limousine interior with gold mood lighting",
+    "category": "interior",
+    "categoryLabel": "Interior",
+    "caption": "Gold Hour"
+  },
+  {
+    "id": "slide-03",
+    "src": "/images/gallery-3.webp",
+    "alt": "High Class Limousine Services branding",
+    "category": "brand",
+    "categoryLabel": "Brand",
+    "caption": "The Brand"
+  },
+  {
+    "id": "slide-04",
+    "src": "/images/gallery-4.webp",
+    "alt": "Limousine on Vernal Utah highway",
+    "category": "vernal",
+    "categoryLabel": "Vernal Scenery",
+    "caption": "Basin Road"
+  },
+  {
+    "id": "slide-05",
+    "src": "/images/gallery-5.webp",
+    "alt": "Wedding limo arrival",
+    "category": "events",
+    "categoryLabel": "Events",
+    "caption": "Wedding Day"
+  },
+  {
+    "id": "slide-06",
+    "src": "/images/gallery-6.webp",
+    "alt": "Prom limousine group photo",
+    "category": "events",
+    "categoryLabel": "Events",
+    "caption": "Prom Night"
+  },
+  {
+    "id": "slide-07",
+    "src": "/images/gallery-7.webp",
+    "alt": "Limousine leather seating detail",
+    "category": "interior",
+    "categoryLabel": "Interior",
+    "caption": "Leather & Glow"
+  },
+  {
+    "id": "slide-08",
+    "src": "/images/gallery-8.jpg",
+    "alt": "Limousine at Dinosaur National Monument",
+    "category": "vernal",
+    "categoryLabel": "Vernal Scenery",
+    "caption": "Dinosaur Country"
+  },
+  {
+    "id": "slide-09",
+    "src": "/images/gallery-9.webp",
+    "alt": "Limo reflection on wet pavement",
+    "category": "exterior",
+    "categoryLabel": "Exterior",
+    "caption": "Reflection"
+  },
+  {
+    "id": "slide-10",
+    "src": "/images/gallery-10.webp",
+    "alt": "Champagne flutes inside limo",
+    "category": "interior",
+    "categoryLabel": "Interior",
+    "caption": "Cheers"
+  },
+  {
+    "id": "slide-11",
+    "src": "/images/gallery-11.webp",
+    "alt": "Gold brand detail",
+    "category": "brand",
+    "categoryLabel": "Brand",
+    "caption": "Class Isn't Extinct"
+  },
+  {
+    "id": "slide-12",
+    "src": "/images/gallery-12.webp",
+    "alt": "Birthday party limousine arrival",
+    "category": "events",
+    "categoryLabel": "Events",
+    "caption": "The Celebration"
+  }
+]

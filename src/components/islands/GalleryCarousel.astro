@@ -1,0 +1,218 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+/**
+ * Filterable photo carousel with dot nav, keyboard control, swipe and autoplay.
+ *
+ * Island: ported from the legacy inline <script> on gallery.html. The slides
+ * now come from the galleryImages collection instead of being hand-written
+ * twelve times in the markup.
+ */
+interface Props {
+  images: CollectionEntry<'galleryImages'>['data'][];
+}
+
+const { images } = Astro.props;
+
+const filters = [
+  { key: 'all', label: 'All' },
+  { key: 'exterior', label: 'Exterior' },
+  { key: 'interior', label: 'Interior' },
+  { key: 'events', label: 'Events' },
+  { key: 'vernal', label: 'Vernal Scenery' },
+  { key: 'brand', label: 'Brand' },
+];
+---
+
+<section class="gallery-carousel-section">
+  <div class="container">
+    <div class="gallery-filters reveal">
+      {
+        filters.map((f) => (
+          <button
+            type="button"
+            class={f.key === 'all' ? 'active' : undefined}
+            data-filter={f.key}
+          >
+            {f.label}
+          </button>
+        ))
+      }
+    </div>
+
+    <div
+      class="carousel reveal"
+      id="galleryCarousel"
+      aria-roledescription="carousel"
+      aria-label="Photo gallery"
+    >
+      <div class="carousel__corner carousel__corner--tl"></div>
+      <div class="carousel__corner carousel__corner--tr"></div>
+      <div class="carousel__corner carousel__corner--bl"></div>
+      <div class="carousel__corner carousel__corner--br"></div>
+
+      <button class="carousel__arrow carousel__arrow--prev" type="button" aria-label="Previous image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+          ><path d="M15.75 19.5L8.25 12l7.5-7.5"></path></svg
+        >
+      </button>
+
+      <div class="carousel__track" id="carouselTrack">
+        {
+          images.map((img) => (
+            <div class="carousel__slide" data-cat={img.category}>
+              <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
+              <div class="carousel__caption">
+                <span class="carousel__cat">{img.categoryLabel}</span>
+                <span class="carousel__title">{img.caption}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <button class="carousel__arrow carousel__arrow--next" type="button" aria-label="Next image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+          ><path d="M8.25 4.5l7.5 7.5-7.5 7.5"></path></svg
+        >
+      </button>
+    </div>
+
+    <div class="carousel__dots" id="carouselDots" role="tablist" aria-label="Slide navigation"></div>
+
+    <div class="carousel__counter">
+      <span id="carouselCurrent">1</span>
+      <span class="carousel__counter-divider"></span>
+      <span id="carouselTotal">{images.length}</span>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ============================================================
+   GALLERY CAROUSEL
+   - Filtering, dot nav, arrow controls, keyboard, swipe, autoplay
+   ============================================================ */
+(function () {
+  const track    = document.getElementById('carouselTrack');
+  const dotsWrap = document.getElementById('carouselDots');
+  const prevBtn  = document.querySelector('.carousel__arrow--prev');
+  const nextBtn  = document.querySelector('.carousel__arrow--next');
+  const filters  = document.querySelectorAll('.gallery-filters button');
+  const currentEl = document.getElementById('carouselCurrent');
+  const totalEl   = document.getElementById('carouselTotal');
+  if (!track) return;
+
+  const ALL_SLIDES = Array.from(track.children);
+  let visible = ALL_SLIDES.slice();   // currently filtered set
+  let index   = 0;
+  let autoplayTimer = null;
+  const AUTOPLAY_MS = 5500;
+
+  function buildDots() {
+    dotsWrap.innerHTML = '';
+    visible.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.className = 'carousel__dot' + (i === index ? ' is-active' : '');
+      d.setAttribute('role', 'tab');
+      d.setAttribute('aria-label', `Go to slide ${i + 1}`);
+      d.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(d);
+    });
+  }
+
+  function applyState() {
+    // Hide non-visible slides; show visible ones
+    ALL_SLIDES.forEach(s => s.classList.remove('is-active', 'is-prev', 'is-next', 'is-hidden'));
+    ALL_SLIDES.forEach(s => {
+      if (!visible.includes(s)) s.classList.add('is-hidden');
+    });
+    // Mark active / neighbor slides
+    const len = visible.length;
+    if (len === 0) return;
+    visible[index].classList.add('is-active');
+    visible[(index - 1 + len) % len].classList.add('is-prev');
+    visible[(index + 1) % len].classList.add('is-next');
+
+    // Dots
+    dotsWrap.querySelectorAll('.carousel__dot').forEach((d, i) => {
+      d.classList.toggle('is-active', i === index);
+    });
+
+    // Counter
+    currentEl.textContent = String(index + 1);
+    totalEl.textContent   = String(len);
+  }
+
+  function goTo(i) {
+    if (visible.length === 0) return;
+    index = ((i % visible.length) + visible.length) % visible.length;
+    applyState();
+    restartAutoplay();
+  }
+  const next = () => goTo(index + 1);
+  const prev = () => goTo(index - 1);
+
+  function setFilter(cat) {
+    visible = (cat === 'all')
+      ? ALL_SLIDES.slice()
+      : ALL_SLIDES.filter(s => s.dataset.cat === cat);
+    index = 0;
+    buildDots();
+    applyState();
+  }
+
+  // Filter buttons
+  filters.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filters.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      setFilter(btn.dataset.filter);
+    });
+  });
+
+  // Arrows
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  // Click an adjacent (prev/next) slide to jump to it
+  track.addEventListener('click', e => {
+    const slide = e.target.closest('.carousel__slide');
+    if (!slide) return;
+    if (slide.classList.contains('is-prev')) prev();
+    else if (slide.classList.contains('is-next')) next();
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  prev();
+    if (e.key === 'ArrowRight') next();
+  });
+
+  // Touch swipe
+  let touchX = null;
+  track.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend',   e => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 50) (dx < 0 ? next : prev)();
+    touchX = null;
+  });
+
+  // Autoplay (pause on hover/focus)
+  function startAutoplay()   { autoplayTimer = setInterval(next, AUTOPLAY_MS); }
+  function stopAutoplay()    { clearInterval(autoplayTimer); autoplayTimer = null; }
+  function restartAutoplay() { stopAutoplay(); startAutoplay(); }
+
+  const carousel = document.getElementById('galleryCarousel');
+  carousel.addEventListener('mouseenter', stopAutoplay);
+  carousel.addEventListener('mouseleave', startAutoplay);
+  carousel.addEventListener('focusin',   stopAutoplay);
+  carousel.addEventListener('focusout',  startAutoplay);
+
+  // Init
+  buildDots();
+  applyState();
+  startAutoplay();
+})();
+</script>

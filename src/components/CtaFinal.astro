@@ -1,0 +1,45 @@
+---
+import { SITE } from '../lib/site.js';
+
+interface Props {
+  title: string;
+  titleScript?: string;
+  sub?: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  /** Defaults to the phone CTA every legacy page used. */
+  secondaryLabel?: string;
+  secondaryHref?: string;
+}
+
+const {
+  title,
+  titleScript,
+  sub = 'Book your luxury limousine today.',
+  primaryLabel = 'Request a Quote',
+  primaryHref = '/contact#quote',
+  secondaryLabel = `Call ${SITE.phone}`,
+  secondaryHref = SITE.phoneHref,
+} = Astro.props;
+---
+
+<section class="cta-final">
+  <h2>
+    {title}
+    {
+      titleScript && (
+        <>
+          {' '}
+          <span class="italic-script gold-text">{titleScript}</span>
+        </>
+      )
+    }
+  </h2>
+  <p>{sub}</p>
+  <div class="cta-final__actions">
+    <a href={primaryHref} class="btn btn--gold">
+      {primaryLabel} <span class="btn__arrow">→</span>
+    </a>
+    <a href={secondaryHref} class="btn btn--ghost-light">{secondaryLabel}</a>
+  </div>
+</section>

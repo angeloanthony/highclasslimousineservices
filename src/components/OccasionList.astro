@@ -1,0 +1,23 @@
+---
+interface Occasion {
+  title: string;
+  body: string;
+}
+
+interface Props {
+  items: Occasion[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="occasion-list reveal-stagger">
+  {
+    items.map((o) => (
+      <div class="occasion-list__item">
+        <h4 set:html={o.title} />
+        <p set:html={o.body} />
+      </div>
+    ))
+  }
+</div>

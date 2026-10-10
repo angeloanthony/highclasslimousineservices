@@ -1,0 +1,475 @@
+---
+/**
+ * Prom planning checklist. Keeps checked milestones and the chosen prom date
+ * in localStorage. Island: only this page ships the script.
+ */
+---
+
+<div class="hc-tl reveal" id="hc-tl">
+  <div class="hc-tl__date">
+    <label for="hc-tl-prom-date">Your Prom Date</label>
+    <input type="date" id="hc-tl-prom-date" />
+    <div class="hc-tl__status" id="hc-tl-status" aria-live="polite">
+      Pick your date to see your timeline →
+    </div>
+  </div>
+
+  <div class="hc-tl__track" id="hc-tl-track"></div>
+
+  <div class="hc-tl__progress">
+    <span class="hc-tl__progress-label">Your Progress</span>
+    <div class="hc-tl__progress-bar">
+      <div class="hc-tl__progress-fill" id="hc-tl-fill"></div>
+    </div>
+    <span class="hc-tl__progress-text" id="hc-tl-progress-text">0 of 6 done</span>
+  </div>
+</div>
+
+<style is:global>
+  /* Global: the milestone list is rendered by JS, so scoped styles would miss it. */
+  .hc-tl { max-width: 880px; margin: 0 auto; }
+
+  .hc-tl__date {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    background: #fff;
+    padding: 1.5rem 1.75rem;
+    border-radius: 6px;
+    margin-bottom: 2.5rem;
+    border: 1px solid rgba(184, 157, 94, 0.2);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+  }
+  .hc-tl__date::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(180deg, var(--gold-bright), var(--gold-deep));
+    border-radius: 6px 0 0 6px;
+  }
+  .hc-tl__date label {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .hc-tl__date input[type='date'] {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid rgba(15, 22, 38, 0.15);
+    border-radius: 4px;
+    background: var(--ivory);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .hc-tl__date input[type='date']:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-glow);
+  }
+  .hc-tl__status {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--gold-deep);
+    margin-left: auto;
+  }
+  .hc-tl__status strong {
+    font-family: var(--font-display);
+    font-style: normal;
+    font-size: 1.4rem;
+    color: var(--ink);
+    margin-right: 0.3rem;
+  }
+
+  .hc-tl__track { position: relative; padding-left: 2.5rem; }
+  .hc-tl__track::before {
+    content: '';
+    position: absolute;
+    left: 0.95rem; top: 1rem; bottom: 1rem;
+    width: 2px;
+    background: linear-gradient(180deg, var(--gold-bright) 0%, rgba(184, 157, 94, 0.25) 100%);
+  }
+
+  .hc-tl__item {
+    position: relative;
+    background: #fff;
+    padding: 1.4rem 1.6rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(15, 22, 38, 0.06);
+    transition: all 0.3s var(--ease);
+  }
+  .hc-tl__item::before {
+    content: '';
+    position: absolute;
+    left: -2.05rem; top: 1.55rem;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--ivory);
+    border: 2px solid rgba(184, 157, 94, 0.35);
+    transition: all 0.3s var(--ease);
+    z-index: 1;
+  }
+
+  .hc-tl__item.is-current {
+    background: linear-gradient(135deg, #fff 0%, #faf6ed 100%);
+    border-color: var(--gold);
+    box-shadow: 0 12px 36px -10px var(--gold-glow), 0 0 0 1px var(--gold);
+    transform: translateX(4px);
+  }
+  .hc-tl__item.is-current::before {
+    background: var(--gold-bright);
+    border-color: var(--gold-deep);
+    box-shadow: 0 0 0 6px var(--gold-glow);
+    animation: hc-tl-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes hc-tl-pulse {
+    0%, 100% { box-shadow: 0 0 0 6px var(--gold-glow); }
+    50%      { box-shadow: 0 0 0 12px rgba(184, 157, 94, 0.08); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hc-tl__item.is-current::before { animation: none; }
+  }
+
+  .hc-tl__item.is-overdue {
+    background: rgba(143, 111, 58, 0.04);
+    border-color: rgba(143, 111, 58, 0.18);
+  }
+  .hc-tl__item.is-overdue::before {
+    background: rgba(143, 111, 58, 0.4);
+    border-color: rgba(143, 111, 58, 0.5);
+  }
+
+  .hc-tl__item.is-done { opacity: 0.65; }
+  .hc-tl__item.is-done::before {
+    background: var(--gold-deep);
+    border-color: var(--gold-deep);
+  }
+  .hc-tl__item.is-done .hc-tl__title {
+    text-decoration: line-through;
+    text-decoration-color: rgba(143, 111, 58, 0.4);
+  }
+
+  .hc-tl__head {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .hc-tl__check {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border: 2px solid rgba(15, 22, 38, 0.2);
+    border-radius: 4px;
+    cursor: pointer;
+    background: #fff;
+    position: relative;
+    margin-top: 2px;
+    transition: all 0.2s var(--ease);
+  }
+  .hc-tl__check:hover { border-color: var(--gold); }
+  .hc-tl__check:focus-visible {
+    outline: 2px solid var(--gold-deep);
+    outline-offset: 2px;
+  }
+  .hc-tl__check.is-checked { background: var(--gold); border-color: var(--gold); }
+  .hc-tl__check.is-checked::after {
+    content: '';
+    position: absolute;
+    left: 5px; top: 1px;
+    width: 6px; height: 11px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+
+  .hc-tl__week {
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    font-weight: 600;
+    margin-bottom: 0.15rem;
+  }
+  .hc-tl__title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--ink);
+    margin: 0 0 0.4rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .hc-tl__body p {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .hc-tl__badge {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    margin-left: 0.5rem;
+  }
+  .hc-tl__badge--current { background: var(--gold); color: var(--ink); }
+  .hc-tl__badge--overdue { background: rgba(143, 111, 58, 0.15); color: var(--gold-deep); }
+  .hc-tl__badge--done    { background: rgba(15, 22, 38, 0.08); color: var(--ink-soft); }
+
+  .hc-tl__progress {
+    background: #fff;
+    padding: 1.25rem 1.5rem;
+    border-radius: 6px;
+    margin-top: 2rem;
+    border: 1px solid rgba(184, 157, 94, 0.18);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .hc-tl__progress-label {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .hc-tl__progress-bar {
+    flex: 1;
+    min-width: 200px;
+    height: 8px;
+    background: var(--cream-warm);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .hc-tl__progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-bright), var(--gold-deep));
+    width: 0%;
+    transition: width 0.6s var(--ease-out);
+  }
+  .hc-tl__progress-text {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  @media (max-width: 600px) {
+    .hc-tl__date { padding: 1.25rem; }
+    .hc-tl__status { margin-left: 0; width: 100%; }
+    .hc-tl__track { padding-left: 2rem; }
+    .hc-tl__track::before { left: 0.6rem; }
+    .hc-tl__item::before { left: -1.7rem; }
+  }
+</style>
+
+<script>
+  const MILESTONES = [
+    {
+      id: 'group',
+      weeksBefore: 12,
+      week: '12 Weeks Out',
+      title: 'Pick the Group',
+      body: "Decide who's in the friend group. This dictates the size of the limo, the table size at dinner, and how the photo logistics work. Six to ten people is the sweet spot — enough to feel like an event, small enough that nobody gets lost.",
+    },
+    {
+      id: 'attire',
+      weeksBefore: 10,
+      week: '10 Weeks Out',
+      title: 'Dress and Tuxedo',
+      body: "Dress alterations take time. Local bridal shops like Bella's in Vernal handle prom dresses, but the selection thins out fast as prom approaches. For tuxedos, JCPenney and Men's Wearhouse rentals (drive to SLC or order shipped) need to be measured 6–8 weeks ahead.",
+    },
+    {
+      id: 'dinner',
+      weeksBefore: 6,
+      week: '6 Weeks Out',
+      title: 'Dinner Reservation',
+      body: "Antica Forma, Vernal Brewing Company, and the Quarry Steakhouse are the prom-popular spots. Antica fills up first — call early. If you're a group of eight or more, request a private corner. Make the reservation under one name and confirm by text the day before.",
+    },
+    {
+      id: 'limo',
+      weeksBefore: 5,
+      week: '4–6 Weeks Out',
+      title: 'Limousine',
+      body: "Limo bookings for prom Saturday in Vernal book up by mid-March. Confirm the limo size matches the group, get the pickup route mapped out, and know what's included (we cover sparkling cider, water, and lighting; check what other companies include).",
+    },
+    {
+      id: 'extras',
+      weeksBefore: 2,
+      week: '2 Weeks Out',
+      title: 'Corsages, Boutonnières, Tickets',
+      body: 'Local florists need 1–2 weeks for prom corsages. Confirm the wrist or pin style. Buy prom tickets through the school. Pay for the dinner and limo deposits — confirm everything’s locked.',
+    },
+    {
+      id: 'confirm',
+      weeksBefore: 0,
+      daysBefore: 1,
+      week: 'Day Before',
+      title: 'Confirmation Calls',
+      body: 'Call the limo company. Call the restaurant. Confirm the pickup order. Pick up the dress from alterations. Iron the tuxedo. Charge phones. The night runs smooth when everyone confirms the day before.',
+    },
+  ];
+
+  const STORAGE_KEY = 'hc_prom_checklist_v1';
+  const DATE_KEY = 'hc_prom_date_v1';
+
+  let checked = {};
+  try {
+    checked = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  } catch {
+    /* private browsing / storage disabled — fall back to in-memory only */
+  }
+
+  let promDate = '';
+  try {
+    promDate = localStorage.getItem(DATE_KEY) || '';
+  } catch {
+    /* ignore */
+  }
+
+  const dateInput = document.getElementById('hc-tl-prom-date');
+  const statusEl = document.getElementById('hc-tl-status');
+  const trackEl = document.getElementById('hc-tl-track');
+  const fillEl = document.getElementById('hc-tl-fill');
+  const progEl = document.getElementById('hc-tl-progress-text');
+
+  const persist = (key, value) => {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const daysBetween = (d1, d2) => Math.round((d2 - d1) / 86400000);
+
+  const escapeHtml = (s) =>
+    s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+
+  function status(daysToProm) {
+    if (!promDate) return 'Pick your date to see your timeline →';
+    if (daysToProm < 0) return '<strong>Prom has passed.</strong> Hope it was unforgettable.';
+    if (daysToProm === 0) return '<strong>Tonight!</strong> The night is here.';
+    if (daysToProm === 1) return '<strong>Tomorrow.</strong> Last calls today.';
+    const weeks = Math.floor(daysToProm / 7);
+    const remainder = daysToProm % 7;
+    if (weeks === 0) return `<strong>${daysToProm} days</strong> until prom`;
+    if (remainder === 0)
+      return `<strong>${weeks} ${weeks === 1 ? 'week' : 'weeks'}</strong> until prom`;
+    return `<strong>${weeks}w ${remainder}d</strong> until prom`;
+  }
+
+  function classify(milestone, daysToProm) {
+    if (checked[milestone.id]) return 'done';
+    if (!promDate) return 'neutral';
+    const targetDays =
+      milestone.daysBefore != null ? milestone.daysBefore : milestone.weeksBefore * 7;
+    if (daysToProm < 0) return 'overdue';
+    // "current" while we're inside the week leading up to the target.
+    if (Math.abs(daysToProm - targetDays) <= 7 && daysToProm <= targetDays + 7) return 'current';
+    if (daysToProm < targetDays) return 'overdue';
+    return 'upcoming';
+  }
+
+  function render() {
+    let daysToProm = null;
+    if (promDate) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      daysToProm = daysBetween(today, new Date(promDate + 'T00:00:00'));
+    }
+
+    statusEl.innerHTML = status(daysToProm);
+
+    // Only the first unfinished milestone gets the "Now" / "Catch up" badge.
+    let firstActiveIdx = -1;
+    if (promDate && daysToProm >= 0) {
+      for (let i = 0; i < MILESTONES.length; i++) {
+        const c = classify(MILESTONES[i], daysToProm);
+        if (c === 'current' || c === 'overdue') {
+          firstActiveIdx = i;
+          break;
+        }
+      }
+    }
+
+    trackEl.innerHTML = MILESTONES.map((m, i) => {
+      const cls = classify(m, daysToProm);
+      let stateClass = '';
+      let badge = '';
+      if (checked[m.id]) {
+        stateClass = 'is-done';
+        badge = '<span class="hc-tl__badge hc-tl__badge--done">Done</span>';
+      } else if (cls === 'current' && i === firstActiveIdx) {
+        stateClass = 'is-current';
+        badge = '<span class="hc-tl__badge hc-tl__badge--current">Now</span>';
+      } else if (cls === 'overdue' && i === firstActiveIdx) {
+        stateClass = 'is-overdue';
+        badge = '<span class="hc-tl__badge hc-tl__badge--overdue">Catch up</span>';
+      } else if (cls === 'overdue') {
+        stateClass = 'is-overdue';
+      }
+
+      return `
+        <div class="hc-tl__item ${stateClass}" data-milestone="${m.id}">
+          <div class="hc-tl__head">
+            <div class="hc-tl__check ${checked[m.id] ? 'is-checked' : ''}" role="checkbox" aria-checked="${!!checked[m.id]}" aria-label="${escapeHtml(m.title)}" tabindex="0" data-check="${m.id}"></div>
+            <div style="flex:1;">
+              <div class="hc-tl__week">${m.week}${badge}</div>
+              <h3 class="hc-tl__title">${escapeHtml(m.title)}</h3>
+            </div>
+          </div>
+          <div class="hc-tl__body"><p>${escapeHtml(m.body)}</p></div>
+        </div>
+      `;
+    }).join('');
+
+    trackEl.querySelectorAll('[data-check]').forEach((box) => {
+      const toggle = () => {
+        const id = box.dataset.check;
+        checked[id] = !checked[id];
+        persist(STORAGE_KEY, JSON.stringify(checked));
+        render();
+      };
+      box.addEventListener('click', toggle);
+      box.addEventListener('keydown', (e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+    });
+
+    const doneCount = MILESTONES.filter((m) => checked[m.id]).length;
+    fillEl.style.width = (doneCount / MILESTONES.length) * 100 + '%';
+    progEl.textContent = `${doneCount} of ${MILESTONES.length} done`;
+  }
+
+  if (promDate) dateInput.value = promDate;
+
+  dateInput.addEventListener('change', () => {
+    promDate = dateInput.value;
+    persist(DATE_KEY, promDate);
+    render();
+  });
+
+  render();
+</script>

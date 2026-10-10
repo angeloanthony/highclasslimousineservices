@@ -1,0 +1,389 @@
+---
+/**
+ * Leaflet map of Uintah Basin wedding venues with drive time and package range per pin.
+ *
+ * Island: ported from the legacy inline <script> on wedding-limo-uintah-basin.html.
+ */
+---
+
+<section class="hc-map-section">
+  <div class="container">
+    <div class="section-head reveal" style="text-align:center;">
+      <span class="eyebrow gold-text">Pick Your Venues</span>
+      <h2>Map your <span class="italic-script gold-text">Basin wedding day.</span></h2>
+      <p>Click a venue to see the route from our home base in Vernal, the typical drive time, and a price range for a wedding-day package to that area.</p>
+    </div>
+
+    <div class="hc-map-wrap reveal">
+      <div class="hc-map" id="hc-map" role="application" aria-label="Uintah Basin wedding venue map"></div>
+
+      <aside class="hc-map-side" id="hc-map-side">
+        <div class="hc-map-side__eyebrow">Selected Venue</div>
+        <h3 class="hc-map-side__title" id="hc-map-name">Click a pin to start</h3>
+        <div class="hc-map-side__subtitle" id="hc-map-zone">— or pick a zone below —</div>
+        <p class="hc-map-side__body" id="hc-map-body">Every wedding in the Basin is a different drive. Click any of the venue pins on the map to see the route from our Vernal home base, drive time, and the package range for that area.</p>
+        <ul class="hc-map-side__details" id="hc-map-details" hidden>
+          <li><span>Drive time from Vernal</span><span id="hc-map-drive">—</span></li>
+          <li><span>Distance</span><span id="hc-map-dist">—</span></li>
+          <li><span>Typical package</span><span id="hc-map-pkg">—</span></li>
+          <li><span>Recommended hours</span><span id="hc-map-hrs">—</span></li>
+        </ul>
+        <a href="/contact#quote" class="btn hc-map-side__cta" id="hc-map-cta" hidden>Quote This Route <span class="btn__arrow">→</span></a>
+        <p class="hc-map-side__hint">Drive times are typical for clear weather. Winter and ranch-road routes may add 15–30%.</p>
+
+        <ul class="hc-map-side__zonelist">
+          <li><span class="dot" style="background:#d4b97f;"></span> Vernal · Naples · Maeser</li>
+          <li><span class="dot" style="background:#b89d5e;"></span> Roosevelt · Myton · Tridell</li>
+          <li><span class="dot" style="background:#8f6f3a;"></span> Duchesne · Tabiona · Strawberry</li>
+          <li><span class="dot" style="background:#d9c9a0;"></span> Jensen · Altamont · Rural Ranches</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /* Global rather than scoped: parts of this widget are rendered by JS at
+     runtime and never receive Astro's scope attribute. */
+  .hc-map-section { padding: 5rem 0; background: var(--paper); }
+  .hc-map-section .section-head h2 { letter-spacing: -0.01em; }
+  .hc-map-section .section-head p {
+    font-family: var(--font-accent);
+    font-size: 1.15rem;
+    line-height: 1.55;
+    max-width: 640px;
+    margin: 1rem auto 0;
+    color: var(--ink-soft);
+  }
+
+  .hc-map-wrap {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 0;
+    margin: 3rem auto 0;
+    max-width: 1200px;
+    background: var(--ink);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(184, 157, 94, 0.18);
+    position: relative;
+    height: 580px;
+  }
+  .hc-map-wrap::before, .hc-map-wrap::after {
+    content: '';
+    position: absolute;
+    width: 28px; height: 28px;
+    border: 1px solid var(--gold);
+    pointer-events: none;
+    z-index: 500;
+  }
+  .hc-map-wrap::before { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+  .hc-map-wrap::after { bottom: 12px; right: 12px; border-left: none; border-top: none; }
+
+  .hc-map { height: 100%; width: 100%; background: var(--ink); }
+
+  .hc-map-side {
+    padding: 1.75rem 1.5rem;
+    background: linear-gradient(180deg, var(--ink) 0%, var(--ink-soft) 100%);
+    color: var(--ivory);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    border-left: 1px solid rgba(184, 157, 94, 0.18);
+  }
+
+  .hc-map-side__eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .hc-map-side__title {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    color: var(--ivory);
+    margin: 0 0 0.4rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .hc-map-side__subtitle {
+    font-family: var(--font-accent);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold-soft);
+    margin-bottom: 1.25rem;
+  }
+  .hc-map-side__body {
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    color: rgba(248, 246, 242, 0.78);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+  .hc-map-side__details {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .hc-map-side__details li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: rgba(248, 246, 242, 0.78);
+  }
+  .hc-map-side__details li span:last-child {
+    color: var(--gold-bright);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .hc-map-side__cta {
+    background: var(--gold);
+    color: var(--ink);
+    border-color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+  .hc-map-side__cta:hover {
+    background: var(--gold-bright);
+    border-color: var(--gold-bright);
+  }
+  .hc-map-side__hint {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: rgba(248, 246, 242, 0.5);
+    text-align: center;
+    margin-top: 0.5rem;
+    line-height: 1.5;
+  }
+
+  .hc-map-side__zonelist {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 0;
+  }
+  .hc-map-side__zonelist li {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: rgba(248, 246, 242, 0.7);
+    padding: 0.45rem 0;
+  }
+  .hc-map-side__zonelist .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .hc-map-wrap { grid-template-columns: 1fr; height: auto; }
+    .hc-map { height: 400px; }
+    .hc-map-side { border-left: none; border-top: 1px solid rgba(184, 157, 94, 0.18); }
+  }
+
+  /* Leaflet pin overrides — gold styling */
+  .hc-map-pin {
+    background: transparent;
+    border: none;
+  }
+  .hc-map-pin__dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--gold-bright);
+    border: 2px solid var(--ink);
+    box-shadow: 0 0 0 2px var(--gold-bright), 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .hc-map-pin__ring {
+    position: absolute;
+    top: -8px; left: -8px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    opacity: 0.5;
+    animation: hc-map-ring 2.4s ease-in-out infinite;
+  }
+  @keyframes hc-map-ring {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50%      { transform: scale(1.5); opacity: 0; }
+  }
+  .hc-map-pin--home .hc-map-pin__dot {
+    width: 22px; height: 22px;
+    background: var(--gold-bright);
+    box-shadow: 0 0 0 3px var(--gold), 0 0 20px var(--gold-glow), 0 4px 12px rgba(0,0,0,0.4);
+  }
+
+  .leaflet-popup-content-wrapper {
+    background: var(--ink);
+    color: var(--ivory);
+    border-radius: 4px;
+    border: 1px solid var(--gold);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+  }
+  .leaflet-popup-tip { background: var(--ink); border: 1px solid var(--gold); }
+  .leaflet-popup-content {
+    margin: 0.85rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+  }
+  .leaflet-popup-content strong {
+    display: block;
+    font-family: var(--font-display);
+    color: var(--gold-bright);
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+  .leaflet-popup-close-button { color: var(--gold-bright) !important; }
+  .leaflet-container { font-family: var(--font-body); }
+</style>
+
+<script>
+// Leaflet is bundled rather than pulled from unpkg, so the map works offline
+// in dev, gets versioned with the build, and needs no CDN in the CSP.
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+(function () {
+  function init() {
+    if (!document.getElementById('hc-map')) return;
+
+    const HOME = { lat: 40.4555, lng: -109.5287, name: 'Vernal — Home Base' };
+
+    // Venue data: drive time/distance from Vernal
+    const VENUES = [
+      // VERNAL ZONE
+      { id: 'vernal-temple',  zone: 'Vernal · Naples',     name: 'Vernal Utah Temple',
+        body: 'Temple ceremonies followed by a reception at one of Vernal\'s convention centers. The shortest, simplest day in the Basin.',
+        lat: 40.4634, lng: -109.5295, drive: '5 min', dist: '2 mi', pkg: '$500–$800', hrs: '3–4 hrs', color: '#d4b97f' },
+      { id: 'western-park',   zone: 'Vernal · Naples',     name: 'Western Park Convention Center',
+        body: 'Vernal\'s largest reception venue. Easy logistics, good photo backdrop, plenty of parking for the limousine arrival.',
+        lat: 40.4521, lng: -109.5298, drive: '4 min', dist: '1.5 mi', pkg: '$500–$750', hrs: '3–4 hrs', color: '#d4b97f' },
+      { id: 'bingham-center', zone: 'Vernal · Naples',     name: 'Bingham Conference Center',
+        body: 'Indoor reception space close to the Vernal town center. Good rainy-day backup. Tight turnaround works well with a 3-hour package.',
+        lat: 40.4585, lng: -109.5310, drive: '5 min', dist: '2 mi', pkg: '$500–$700', hrs: '3 hrs', color: '#d4b97f' },
+
+      // ROOSEVELT ZONE
+      { id: 'roosevelt-stake', zone: 'Roosevelt',          name: 'Roosevelt LDS Stake Center',
+        body: 'Many Roosevelt weddings center on the LDS Stake Center for the ceremony. Photo stops along Highway 40 are popular en route.',
+        lat: 40.2997, lng: -109.9988, drive: '40 min', dist: '32 mi', pkg: '$750–$1,100', hrs: '5–6 hrs', color: '#b89d5e' },
+      { id: 'myton-ranch',    zone: 'Myton · Roosevelt',   name: 'Myton Ranch Venues',
+        body: 'Family ranches between Roosevelt and Myton. Outdoor ceremonies, tent receptions. We handle graded ranch roads — discuss longer dirt routes in advance.',
+        lat: 40.1955, lng: -110.0570, drive: '50 min', dist: '40 mi', pkg: '$900–$1,200', hrs: '6 hrs', color: '#b89d5e' },
+
+      // DUCHESNE ZONE
+      { id: 'duchesne-stake', zone: 'Duchesne',            name: 'Duchesne Town Venues',
+        body: 'Smaller weddings often happen here. The drive from Vernal is the longer side of our service area, but the routes are scenic the whole way.',
+        lat: 40.1630, lng: -110.4007, drive: '1 hr 5 min', dist: '52 mi', pkg: '$900–$1,300', hrs: '6–7 hrs', color: '#8f6f3a' },
+      { id: 'strawberry-bay', zone: 'Strawberry · Tabiona', name: 'Strawberry Bay Lodge',
+        body: 'High-altitude reception venue with mountain views. Reception-only typically — most couples ceremony elsewhere then drive up. Worth the trip.',
+        lat: 40.1781, lng: -111.1090, drive: '1 hr 45 min', dist: '95 mi', pkg: '$1,200–$1,500', hrs: '7–8 hrs', color: '#8f6f3a' },
+      { id: 'tabiona-rural',  zone: 'Tabiona',             name: 'Tabiona Rural Venues',
+        body: 'Country ceremonies near the river. Quiet, beautiful, and a long drive — book the longer package and enjoy the road.',
+        lat: 40.3672, lng: -110.6829, drive: '1 hr 20 min', dist: '70 mi', pkg: '$1,000–$1,400', hrs: '7 hrs', color: '#8f6f3a' },
+
+      // JENSEN / ALTAMONT ZONE
+      { id: 'jensen-rural',   zone: 'Jensen',              name: 'Jensen Barn Venues',
+        body: 'Outdoor barn weddings east of Vernal toward the Colorado border. Rustic, photogenic. Sunset photo stops at Dinosaur National Monument on the way back are standard.',
+        lat: 40.3636, lng: -109.3431, drive: '20 min', dist: '17 mi', pkg: '$700–$1,000', hrs: '5 hrs', color: '#d9c9a0' },
+      { id: 'tridell-rural',  zone: 'Tridell · Altamont',  name: 'Tridell / Altamont Ranches',
+        body: 'Working ranches converted for ceremonies. The roads up here vary — graded ranch roads are fine, anything else we discuss in advance.',
+        lat: 40.4061, lng: -109.8412, drive: '30 min', dist: '24 mi', pkg: '$800–$1,150', hrs: '5–6 hrs', color: '#d9c9a0' }
+    ];
+
+    const map = L.map('hc-map', {
+      center: [40.32, -110.0],
+      zoom: 9,
+      scrollWheelZoom: false,
+      zoomControl: true
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© OpenStreetMap contributors © CARTO',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Service area polygon (loose outline of Uintah Basin)
+    L.polygon([
+      [40.95, -110.85],
+      [40.95, -108.90],
+      [40.50, -108.90],
+      [40.10, -109.40],
+      [39.95, -110.85],
+      [40.20, -111.40],
+      [40.65, -111.20]
+    ], {
+      color: '#b89d5e',
+      fillColor: '#b89d5e',
+      fillOpacity: 0.04,
+      weight: 1.5,
+      dashArray: '6 4',
+      opacity: 0.4
+    }).addTo(map);
+
+    // Home base marker
+    const homeIcon = L.divIcon({
+      className: 'hc-map-pin hc-map-pin--home',
+      html: '<div class="hc-map-pin__dot"></div><div class="hc-map-pin__ring"></div>',
+      iconSize: [22, 22], iconAnchor: [11, 11], popupAnchor: [0, -16]
+    });
+    L.marker([HOME.lat, HOME.lng], { icon: homeIcon })
+      .bindPopup(`<strong>${HOME.name}</strong>High Class Limousine Services`)
+      .addTo(map);
+
+    // Active route line (drawn when a venue is selected)
+    let activeLine = null;
+
+    function selectVenue(v) {
+      // Update side panel
+      document.getElementById('hc-map-name').textContent = v.name;
+      document.getElementById('hc-map-zone').textContent = v.zone;
+      document.getElementById('hc-map-body').textContent = v.body;
+      document.getElementById('hc-map-drive').textContent = v.drive;
+      document.getElementById('hc-map-dist').textContent = v.dist;
+      document.getElementById('hc-map-pkg').textContent = v.pkg;
+      document.getElementById('hc-map-hrs').textContent = v.hrs;
+      document.getElementById('hc-map-details').hidden = false;
+      const cta = document.getElementById('hc-map-cta');
+      cta.hidden = false;
+      const params = new URLSearchParams({ venue: v.name, zone: v.zone, package: v.pkg });
+      cta.href = `/contact?${params.toString()}#quote`;
+
+      // Draw route line (straight line — chauffeur knows the actual road)
+      if (activeLine) map.removeLayer(activeLine);
+      activeLine = L.polyline([[HOME.lat, HOME.lng], [v.lat, v.lng]], {
+        color: '#d4b97f',
+        weight: 2,
+        opacity: 0.7,
+        dashArray: '4 6'
+      }).addTo(map);
+    }
+
+    // Add venue pins
+    VENUES.forEach(v => {
+      const icon = L.divIcon({
+        className: 'hc-map-pin',
+        html: `<div class="hc-map-pin__dot" style="background:${v.color};"></div>`,
+        iconSize: [16, 16], iconAnchor: [8, 8], popupAnchor: [0, -10]
+      });
+      const marker = L.marker([v.lat, v.lng], { icon })
+        .bindPopup(`<strong>${v.name}</strong>${v.zone}<br><em style="color:#d9c9a0;">${v.drive} from Vernal</em>`)
+        .addTo(map);
+      marker.on('click', () => selectVenue(v));
+    });
+
+    // Re-enable scroll zoom on click, disable on mouseout
+    map.on('click', () => map.scrollWheelZoom.enable());
+    map.on('mouseout', () => map.scrollWheelZoom.disable());
+  }
+  init();
+})();
+</script>

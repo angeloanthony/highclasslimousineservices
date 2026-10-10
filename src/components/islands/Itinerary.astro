@@ -1,0 +1,518 @@
+---
+/**
+ * Vernal day-trip itinerary builder. Filters attractions, orders the picks by location and totals the time.
+ *
+ * Island: ported from the legacy inline <script> on things-to-do-in-vernal-utah.html.
+ */
+---
+
+<section class="hc-itin-section">
+  <div class="container">
+    <div class="section-head reveal" style="text-align:center;">
+      <span class="eyebrow gold-text">Plan Your Visit</span>
+      <h2>Build your <span class="italic-script gold-text">Vernal day.</span></h2>
+      <p>Pick the spots you want to see. We'll order them by location, give you a realistic time estimate, and offer to chauffeur the whole route in a stretch limousine if you want it done right.</p>
+    </div>
+
+    <div class="hc-itin reveal">
+      <div>
+        <div class="hc-itin__filter" id="hc-itin-filter" role="tablist">
+          <button class="is-active" data-cat="all">All Attractions</button>
+          <button data-cat="dino">Dinosaur Country</button>
+          <button data-cat="scenic">Scenic / Nature</button>
+          <button data-cat="culture">Museums &amp; Culture</button>
+          <button data-cat="dining">Dining</button>
+        </div>
+        <div class="hc-itin__grid" id="hc-itin-grid"></div>
+      </div>
+
+      <aside class="hc-itin__panel">
+        <div class="hc-itin__panel-eyebrow">Your Itinerary</div>
+        <h3 class="hc-itin__panel-title" id="hc-itin-panel-title">Nothing selected yet</h3>
+
+        <div id="hc-itin-empty" class="hc-itin__panel-empty">
+          Click any attraction on the left to add it to your day. We'll auto-sort them by location to minimize backtracking.
+        </div>
+
+        <ol class="hc-itin__list" id="hc-itin-list" hidden></ol>
+
+        <div class="hc-itin__totals" id="hc-itin-totals" hidden>
+          <div class="hc-itin__totals-row"><span>Stops</span><strong id="hc-itin-count">0</strong></div>
+          <div class="hc-itin__totals-row"><span>Estimated time</span><strong id="hc-itin-time">0 hrs</strong></div>
+          <div class="hc-itin__totals-row"><span>Recommended</span><strong id="hc-itin-rec">—</strong></div>
+        </div>
+
+        <a href="/contact#quote" class="btn hc-itin__panel-cta" id="hc-itin-cta" disabled>
+          Chauffeur This Day <span class="btn__arrow">→</span>
+        </a>
+        <p class="hc-itin__panel-hint">A chauffeured day-tour bundles your selected stops into a single private limousine itinerary with drinks, AC, and zero parking hassle.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /* Global rather than scoped: parts of this widget are rendered by JS at
+     runtime and never receive Astro's scope attribute. */
+  .hc-itin-section { padding: 5rem 0; background: var(--paper); }
+  .hc-itin-section .section-head h2 { letter-spacing: -0.01em; }
+  .hc-itin-section .section-head p {
+    font-family: var(--font-accent);
+    font-size: 1.15rem;
+    line-height: 1.55;
+    max-width: 660px;
+    margin: 1rem auto 0;
+    color: var(--ink-soft);
+  }
+
+  .hc-itin {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 1.5rem;
+    margin: 3rem auto 0;
+    max-width: 1180px;
+  }
+  @media (max-width: 900px) {
+    .hc-itin { grid-template-columns: 1fr; }
+  }
+
+  .hc-itin__filter {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .hc-itin__filter button {
+    background: var(--paper);
+    border: 1px solid rgba(15,22,38,0.12);
+    padding: 0.55rem 1.1rem;
+    font-family: var(--font-body);
+    font-size: 0.86rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 999px;
+    transition: all 0.25s var(--ease);
+    color: var(--ink);
+  }
+  .hc-itin__filter button:hover { border-color: var(--gold); }
+  .hc-itin__filter button.is-active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--gold-bright);
+  }
+
+  .hc-itin__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.85rem;
+  }
+
+  .hc-itin__card {
+    background: var(--ivory);
+    border: 1px solid rgba(15,22,38,0.08);
+    border-radius: 4px;
+    padding: 1.1rem 1.15rem;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.25s var(--ease);
+    text-align: left;
+    font-family: var(--font-body);
+  }
+  .hc-itin__card:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .hc-itin__card.is-selected {
+    background: linear-gradient(135deg, #fff 0%, #faf6ed 100%);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 1px var(--gold), 0 12px 32px -10px var(--gold-glow);
+  }
+  .hc-itin__card.is-selected::after {
+    content: '✓';
+    position: absolute;
+    top: 0.65rem; right: 0.85rem;
+    width: 22px; height: 22px;
+    background: var(--gold);
+    color: var(--ink);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: bold;
+  }
+
+  .hc-itin__cat {
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .hc-itin__cardtitle {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    color: var(--ink);
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+    line-height: 1.25;
+    padding-right: 1.5rem;
+  }
+  .hc-itin__cardmeta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    opacity: 0.75;
+  }
+
+  .hc-itin__panel {
+    background: var(--ink);
+    background:
+      radial-gradient(ellipse at top right, rgba(184, 157, 94, 0.18) 0%, transparent 60%),
+      linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%);
+    color: var(--ivory);
+    border-radius: 4px;
+    padding: 1.85rem 1.6rem;
+    border: 1px solid rgba(184, 157, 94, 0.18);
+    position: sticky;
+    top: 100px;
+    align-self: start;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+  }
+
+  .hc-itin__panel-eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .hc-itin__panel-title {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    color: var(--ivory);
+    margin: 0 0 1rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .hc-itin__panel-empty {
+    font-family: var(--font-accent);
+    font-style: italic;
+    color: var(--gold-soft);
+    font-size: 1rem;
+    line-height: 1.55;
+    padding: 1rem 0 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .hc-itin__list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.25rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .hc-itin__list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    color: rgba(248, 246, 242, 0.85);
+  }
+  .hc-itin__list-num {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+  .hc-itin__list-content { flex: 1; min-width: 0; }
+  .hc-itin__list-name {
+    color: var(--ivory);
+    font-weight: 500;
+    display: block;
+  }
+  .hc-itin__list-meta {
+    font-size: 0.78rem;
+    color: rgba(248, 246, 242, 0.6);
+    margin-top: 0.15rem;
+  }
+  .hc-itin__list-remove {
+    background: transparent;
+    border: none;
+    color: rgba(248, 246, 242, 0.4);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+  .hc-itin__list-remove:hover { color: var(--gold-bright); }
+
+  .hc-itin__totals {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.85rem 0 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    margin-bottom: 1rem;
+  }
+  .hc-itin__totals-row {
+    display: flex; justify-content: space-between;
+    color: rgba(248, 246, 242, 0.78);
+  }
+  .hc-itin__totals-row strong {
+    color: var(--gold-bright);
+    font-weight: 600;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hc-itin__panel-cta {
+    width: 100%;
+    justify-content: center;
+    background: var(--gold);
+    color: var(--ink);
+    border-color: var(--gold);
+  }
+  .hc-itin__panel-cta:hover {
+    background: var(--gold-bright);
+    border-color: var(--gold-bright);
+  }
+  .hc-itin__panel-cta:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .hc-itin__panel-hint {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: rgba(248, 246, 242, 0.5);
+    text-align: center;
+    margin-top: 0.85rem;
+    line-height: 1.55;
+  }
+</style>
+
+<script>
+(function () {
+  // Order matters: sorted west-to-east-ish for natural driving order from Vernal
+  const ATTRACTIONS = [
+    {
+      id: 'field-house', cat: 'culture',
+      name: 'Utah Field House of Natural History',
+      desc: 'In-town museum with full dinosaur skeletons.',
+      hours: 1.5, order: 1, drive: 0
+    },
+    {
+      id: 'vernal-brewing', cat: 'dining',
+      name: 'Vernal Brewing Co.',
+      desc: 'Local taps, decent food, downtown.',
+      hours: 1.5, order: 2, drive: 0
+    },
+    {
+      id: 'antica', cat: 'dining',
+      name: 'Antica Forma',
+      desc: 'Wood-fired pizza, the local favorite.',
+      hours: 1.5, order: 3, drive: 0
+    },
+    {
+      id: 'mcconkie', cat: 'dino',
+      name: 'McConkie Ranch Petroglyphs',
+      desc: 'Fremont rock art, easy uphill walk. Donation-based.',
+      hours: 1.5, order: 4, drive: 25
+    },
+    {
+      id: 'red-fleet', cat: 'scenic',
+      name: 'Red Fleet State Park',
+      desc: 'Red sandstone cliffs around a small reservoir. Dinosaur trackway hike.',
+      hours: 2, order: 5, drive: 30
+    },
+    {
+      id: 'steinaker', cat: 'scenic',
+      name: 'Steinaker State Park',
+      desc: 'Reservoir with swim beach, picnic spots, popular with locals.',
+      hours: 1.5, order: 6, drive: 20
+    },
+    {
+      id: 'quarry', cat: 'dino',
+      name: 'Dinosaur Quarry Visitor Center',
+      desc: 'The famous fossil wall. Real bones embedded in rock.',
+      hours: 2, order: 7, drive: 25
+    },
+    {
+      id: 'tilted-rocks', cat: 'dino',
+      name: 'Tour of the Tilted Rocks',
+      desc: 'Scenic loop drive through Dinosaur National Monument with petroglyph stops.',
+      hours: 2, order: 8, drive: 30
+    },
+    {
+      id: 'cub-creek', cat: 'dino',
+      name: 'Cub Creek Petroglyphs',
+      desc: 'Fremont rock art deep in Dinosaur Monument. Worth the drive.',
+      hours: 2, order: 9, drive: 50
+    },
+    {
+      id: 'flaming-gorge', cat: 'scenic',
+      name: 'Flaming Gorge Reservoir',
+      desc: 'Red rock canyon, blue water. Sunset photo spot.',
+      hours: 3, order: 10, drive: 60
+    },
+    {
+      id: 'sheep-creek', cat: 'scenic',
+      name: 'Sheep Creek Loop',
+      desc: 'Dramatic geologic loop drive through Flaming Gorge area.',
+      hours: 2, order: 11, drive: 75
+    }
+  ];
+
+  const STORAGE_KEY = 'hc_itinerary_v1';
+  let selected = {};
+  try { selected = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) {}
+
+  let activeFilter = 'all';
+  const gridEl = document.getElementById('hc-itin-grid');
+  const filterEl = document.getElementById('hc-itin-filter');
+  const listEl = document.getElementById('hc-itin-list');
+  const emptyEl = document.getElementById('hc-itin-empty');
+  const totalsEl = document.getElementById('hc-itin-totals');
+  const titleEl = document.getElementById('hc-itin-panel-title');
+  const countEl = document.getElementById('hc-itin-count');
+  const timeEl = document.getElementById('hc-itin-time');
+  const recEl = document.getElementById('hc-itin-rec');
+  const ctaEl = document.getElementById('hc-itin-cta');
+
+  function persist() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(selected)); } catch (e) {}
+  }
+
+  function renderGrid() {
+    const filtered = activeFilter === 'all'
+      ? ATTRACTIONS
+      : ATTRACTIONS.filter(a => a.cat === activeFilter);
+
+    gridEl.innerHTML = filtered.map(a => {
+      const driveLabel = a.drive === 0 ? 'In town' : `${a.drive} min drive`;
+      return `
+        <button type="button" class="hc-itin__card ${selected[a.id] ? 'is-selected' : ''}" data-id="${a.id}" aria-pressed="${!!selected[a.id]}">
+          <div class="hc-itin__cat">${catLabel(a.cat)}</div>
+          <h4 class="hc-itin__cardtitle">${a.name}</h4>
+          <div class="hc-itin__cardmeta">
+            <span>${a.hours} hrs</span>
+            <span>${driveLabel}</span>
+          </div>
+        </button>
+      `;
+    }).join('');
+
+    gridEl.querySelectorAll('.hc-itin__card').forEach(card => {
+      card.addEventListener('click', () => {
+        const id = card.dataset.id;
+        if (selected[id]) delete selected[id];
+        else selected[id] = true;
+        persist();
+        renderGrid();
+        renderPanel();
+      });
+    });
+  }
+
+  function catLabel(c) {
+    return ({ dino: 'Dinosaur', scenic: 'Scenic', culture: 'Culture', dining: 'Dining' })[c] || c;
+  }
+
+  function renderPanel() {
+    const chosen = ATTRACTIONS
+      .filter(a => selected[a.id])
+      .sort((x, y) => x.order - y.order);
+
+    const count = chosen.length;
+    if (count === 0) {
+      titleEl.textContent = 'Nothing selected yet';
+      emptyEl.hidden = false;
+      listEl.hidden = true;
+      totalsEl.hidden = true;
+      ctaEl.setAttribute('disabled', '');
+      ctaEl.href = '/contact#quote';
+      return;
+    }
+
+    emptyEl.hidden = true;
+    listEl.hidden = false;
+    totalsEl.hidden = false;
+    ctaEl.removeAttribute('disabled');
+
+    const totalActivityHrs = chosen.reduce((s, a) => s + a.hours, 0);
+    // Drive between stops: assume each non-first stop adds half its drive time
+    // (the route order minimizes backtracking but doesn't eliminate it)
+    const totalDriveHrs = chosen.slice(1).reduce((s, a) => s + (a.drive / 60) * 0.6, 0);
+    const totalHrs = totalActivityHrs + totalDriveHrs;
+
+    titleEl.textContent = `${count} stop${count === 1 ? '' : 's'} mapped`;
+
+    listEl.innerHTML = chosen.map((a, i) => `
+      <li>
+        <span class="hc-itin__list-num">${i + 1}</span>
+        <div class="hc-itin__list-content">
+          <span class="hc-itin__list-name">${a.name}</span>
+          <span class="hc-itin__list-meta">${a.hours} hrs · ${catLabel(a.cat)}</span>
+        </div>
+        <button class="hc-itin__list-remove" data-remove="${a.id}" aria-label="Remove ${a.name}">×</button>
+      </li>
+    `).join('');
+
+    listEl.querySelectorAll('[data-remove]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        delete selected[btn.dataset.remove];
+        persist();
+        renderGrid();
+        renderPanel();
+      });
+    });
+
+    countEl.textContent = String(count);
+    const hoursDisplay = totalHrs < 1 ? `${Math.round(totalHrs * 60)} min` : `${totalHrs.toFixed(1)} hrs`;
+    timeEl.textContent = hoursDisplay;
+    let rec;
+    if (totalHrs < 4) rec = 'Half-day tour';
+    else if (totalHrs < 8) rec = 'Full-day tour';
+    else rec = 'Two-day trip';
+    recEl.textContent = rec;
+
+    const params = new URLSearchParams({
+      itinerary: chosen.map(a => a.name).join(' · '),
+      stops: String(count),
+      duration: hoursDisplay
+    });
+    ctaEl.href = `/contact?${params.toString()}#quote`;
+  }
+
+  // Filter buttons
+  filterEl.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterEl.querySelectorAll('button').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      activeFilter = btn.dataset.cat;
+      renderGrid();
+    });
+  });
+
+  renderGrid();
+  renderPanel();
+})();
+</script>

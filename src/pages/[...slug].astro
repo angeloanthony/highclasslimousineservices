@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from 'astro:content';
+import ContentPage from '../layouts/ContentPage.astro';
+import OccasionList from '../components/OccasionList.astro';
+import Section from '../components/Section.astro';
+import SectionHead from '../components/SectionHead.astro';
+
+/**
+ * Single route for every collection-backed page. `build.format: 'file'` writes
+ * dist/weddings.html, which Cloudflare Pages serves at /weddings.
+ */
+export async function getStaticPaths() {
+  const [services, articles, legal] = await Promise.all([
+    getCollection('services'),
+    getCollection('articles'),
+    getCollection('legal'),
+  ]);
+
+  return [...services, ...articles, ...legal].map((entry) => ({
+    // Frontmatter carries the live path; drop the leading slash for the route.
+    params: { slug: entry.data.path.replace(/^\//, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+// Only service pages carry an "occasions" band.
+const occasions = 'occasions' in entry.data ? entry.data.occasions : [];
+---
+
+<ContentPage data={entry.data}>
+  <Content />
+
+  {
+    occasions?.length > 0 && (
+      <Section variant="experience">
+        <SectionHead
+          eyebrow="Occasions"
+          title={entry.data.occasionsTitle}
+          titleScript={entry.data.occasionsTitleScript}
+        />
+        <OccasionList items={occasions} />
+      </Section>
+    )
+  }
+</ContentPage>

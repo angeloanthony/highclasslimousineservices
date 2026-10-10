@@ -1,0 +1,24 @@
+---
+interface Props {
+  /** Maps to the legacy section modifier classes. */
+  variant?: 'plain' | 'experience' | 'related' | 'offers';
+  id?: string;
+  /** Set false for sections that lay out their own container. */
+  container?: boolean;
+}
+
+const { variant = 'plain', id, container = true } = Astro.props;
+const cls = variant === 'plain' ? undefined : variant;
+---
+
+<section class={cls} id={id}>
+  {
+    container ? (
+      <div class="container">
+        <slot />
+      </div>
+    ) : (
+      <slot />
+    )
+  }
+</section>

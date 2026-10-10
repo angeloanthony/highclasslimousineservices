@@ -1,0 +1,25 @@
+{
+  "name": "highclasslimousineservices",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "build:search": "astro build && pagefind --site dist",
+    "preview": "astro preview",
+    "astro": "astro",
+    "verify": "node scripts/verify.mjs",
+    "check:links": "node scripts/check-links.mjs"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^6.0.3",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^6.4.8",
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "pagefind": "^1.5.2"
+  }
+}

@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import CalBooking from '../components/islands/CalBooking.astro';
+import ServiceMap from '../components/islands/ServiceMap.astro';
+import { SITE, providerNode } from '../lib/site.js';
+
+const trustPoints = [
+  'Transparent, all-in pricing',
+  'Professional uniformed chauffeur',
+  'Spotless, fully-insured limousine',
+  'Local Vernal service, not a franchise',
+];
+
+const schema = [
+  {
+    '@type': 'ContactPage',
+    name: 'Contact High Class Limousine Services',
+    url: `${SITE.origin}/contact`,
+    mainEntity: {
+      ...providerNode,
+      areaServed: SITE.areaServed,
+      email: SITE.email,
+    },
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.origin}/` },
+      { '@type': 'ListItem', position: 2, name: 'Contact', item: `${SITE.origin}/contact` },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Contact & Book | High Class Limousine Services Vernal, Utah"
+  description="Contact High Class Limousine Services in Vernal, Utah. Call, email, or request a quote online for luxury limousine service across the Uintah Basin."
+  path="/contact"
+  schema={schema}
+>
+  <PageHeader
+    title="Book"
+    titleScript="your ride"
+    tagline="Tell us about your occasion. We'll build the perfect experience around it."
+    crumbs={[{ label: 'Home', href: '/' }, { label: 'Contact' }]}
+  />
+
+  <section id="quote" class="quote-section">
+    <div class="container">
+      <div class="cal-section__head reveal">
+        <div class="eyebrow">Book Your Ride</div>
+        <h2>
+          Let's plan <span class="italic-script gold-text">something unforgettable.</span>
+        </h2>
+        <p>
+          Select a date and time that works for you. We'll confirm your booking
+          and follow up with everything you need to know before your ride.
+        </p>
+      </div>
+
+      <div class="cal-trust reveal">
+        {
+          trustPoints.map((point) => (
+            <div class="cal-trust__item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>{point}</span>
+            </div>
+          ))
+        }
+      </div>
+
+      <CalBooking />
+
+      <p class="cal-note">
+        Prefer to talk? Call us directly at <a href={SITE.phoneHref}>{SITE.phone}</a>
+         — available 7 days a week.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>High Class Limousine</h3>
+          <div class="italic-script">{SITE.tagline}</div>
+
+          <div class="contact-block">
+            <h4>Call Us</h4>
+            <a href={SITE.phoneHref}>{SITE.phone}</a>
+            <p
+              style="font-family:var(--font-body);font-size:0.9rem;color:var(--gray-300);margin-top:0.5rem;"
+            >
+              Available 7 days a week
+            </p>
+          </div>
+
+          <div class="contact-block">
+            <h4>Email</h4>
+            <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          </div>
+
+          <div class="contact-block">
+            <h4>Service Area</h4>
+            <p>
+              Vernal, Utah<br />Uintah Basin · Duchesne · Roosevelt<br />Dinosaur
+              · Jensen · Flaming Gorge
+            </p>
+          </div>
+
+          <div class="contact-block">
+            <h4>Follow</h4>
+            <div class="contact-social">
+              <a href="#" aria-label="Facebook">FB</a>
+              <a href="#" aria-label="Instagram">IG</a>
+              <a href="#" aria-label="TikTok">TT</a>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="eyebrow">Proudly Local</div>
+          <h2>Based in the <span class="italic-script gold-text">heart of Vernal.</span></h2>
+          <p>
+            We're not a national franchise. We're a local, family-run luxury
+            transportation company rooted right here in the Uintah Basin. When
+            you call us, you're calling neighbors.
+          </p>
+          <p>Come ride with us. Leave with the memory.</p>
+        </div>
+      </div>
+
+      <ServiceMap />
+    </div>
+  </section>
+</BaseLayout>

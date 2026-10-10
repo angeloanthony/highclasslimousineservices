@@ -1,0 +1,69 @@
+---
+import { SITE } from '../lib/site.js';
+
+// Was a client-side `new Date().getFullYear()` on every page. It's a static
+// site rebuilt on deploy, so render it at build time and drop the script.
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div>
+        <div class="footer__brand">
+          <img src="/images/logo.png" alt="" width="48" height="48" />
+          <span
+            ><strong>{SITE.shortName}</strong> · <span>Limousine</span></span
+          >
+        </div>
+        <div class="footer__tagline">{SITE.tagline}</div>
+        <p class="footer__desc">
+          Luxury limousine service based in Vernal, Utah. Serving the Uintah
+          Basin, Roosevelt, Duchesne, Dinosaur National Monument, and beyond.
+        </p>
+      </div>
+
+      <div>
+        <h5>Explore</h5>
+        <ul>
+          {
+            SITE.footerExplore.map((l) => (
+              <li>
+                <a href={l.href}>{l.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <h5>Services</h5>
+        <ul>
+          {
+            SITE.footerServices.map((l) => (
+              <li>
+                <a href={l.href}>{l.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="footer__contact">
+        <h5>Contact</h5>
+        <p><a href={SITE.phoneHref}>{SITE.phone}</a></p>
+        <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+        <p>Vernal, UT 84078<br />Uintah Basin · Utah</p>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <div>© {year} {SITE.name}. All rights reserved.</div>
+      <div class="footer__bottom__links">
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms &amp; Conditions</a>
+        <a href="/sitemap.xml">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
