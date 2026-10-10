@@ -63,7 +63,8 @@
 .pg-checks strong { color: var(--ink); font-weight: 600; }
 
 /* ---------- Hourly rates ---------- */
-.pg-rates { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+/* Two stretch classes: a centered pair rather than a sparse four-up row. */
+.pg-rates { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; max-width: 860px; margin: 0 auto; }
 .pg-rate {
   background: var(--paper); border: 1px solid var(--stone-100);
   box-shadow: var(--shadow-sm); border-radius: 4px; overflow: hidden;
@@ -72,8 +73,6 @@
 .pg-rate:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
 .pg-rate__media { aspect-ratio: 16 / 10; background: linear-gradient(160deg, var(--ink-soft), var(--ink)); }
 .pg-rate__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.pg-rate__icon { display: grid; place-items: center; height: 100%; color: var(--gold-bright); }
-.pg-rate__icon svg { width: 34%; height: auto; }
 .pg-rate__body { padding: 1.5rem 1.25rem 1.6rem; text-align: center; }
 .pg-rate__title {
   font-family: var(--font-display); font-size: 0.95rem; letter-spacing: 0.12em;
@@ -206,7 +205,7 @@
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1100px) {
-  .pg-rates, .pg-trips { grid-template-columns: repeat(2, 1fr); }
+  .pg-trips { grid-template-columns: repeat(2, 1fr); }
   .pg-why { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 900px) {

@@ -1,38 +1,23 @@
 ---
 /**
- * Pricing guide: one vehicle class from the hourly-rate table. Vehicles
- * without a photo on the site (sedan, SUV) get a line icon rather than a
- * stand-in picture of a different vehicle.
+ * Pricing guide: one vehicle class from the hourly-rate table. Only the
+ * stretch limousines the business actually runs belong here.
  */
 interface Props {
   title: string;
   capacity: string;
   rate: string;
   minimum: string;
-  image?: string;
-  alt?: string;
-  icon?: 'sedan' | 'suv';
+  image: string;
+  alt: string;
 }
 
-const { title, capacity, rate, minimum, image, alt = '', icon } = Astro.props;
-
-const icons = {
-  sedan: '<path d="M3 15.5V13l2.2-4.4A2 2 0 0 1 7 7.5h10a2 2 0 0 1 1.8 1.1L21 13v2.5"/><path d="M2 15.5h20v2H2z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/><path d="M5 13h14"/>',
-  suv: '<path d="M2.5 16V9.5A2.5 2.5 0 0 1 5 7h10.5l3 3.5H20a1.5 1.5 0 0 1 1.5 1.5v4"/><path d="M2 16h20v1.8H2z"/><circle cx="6.5" cy="17.8" r="1.8"/><circle cx="17.5" cy="17.8" r="1.8"/><path d="M9.5 7v3.5h9M2.5 10.5h7"/>',
-};
+const { title, capacity, rate, minimum, image, alt } = Astro.props;
 ---
 
 <article class="pg-rate">
   <div class="pg-rate__media">
-    {
-      image ? (
-        <img src={image} alt={alt} width="720" height="450" loading="lazy" decoding="async" />
-      ) : (
-        <span class="pg-rate__icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" set:html={icon ? icons[icon] : ''} />
-        </span>
-      )
-    }
+    <img src={image} alt={alt} width="720" height="450" loading="lazy" decoding="async" />
   </div>
   <div class="pg-rate__body">
     <h3 class="pg-rate__title">{title}</h3>
