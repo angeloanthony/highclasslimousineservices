@@ -13,6 +13,9 @@
   text-align: center; max-width: 640px; margin: 2.25rem auto 0;
   font-size: 0.9rem; color: var(--stone-600);
 }
+.pg-note + .pg-note { margin-top: 0.75rem; }
+.pg-note a { color: var(--gold-deep); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.pg-note a:hover { color: var(--ink); }
 
 /* Visible keyboard focus everywhere on the page. */
 .pg-page a:focus-visible,
