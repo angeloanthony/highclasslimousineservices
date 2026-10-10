@@ -471,6 +471,8 @@ section { padding: 6rem 0; position: relative; }
   transition: transform 0.8s var(--ease-out);
 }
 .service-card:hover .service-card__img { transform: scale(1.06); }
+/* <img> variant (homepage related-reading cards) of the background-image div. */
+img.service-card__img { width: 100%; height: 100%; object-fit: cover; }
 .service-card::after {
   content: '';
   position: absolute; inset: 0;
