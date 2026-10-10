@@ -5,6 +5,7 @@ import PageHeader from '../components/PageHeader.astro';
 import Section from '../components/Section.astro';
 import SectionHead from '../components/SectionHead.astro';
 import OfferCard from '../components/OfferCard.astro';
+import FeatureRow from '../components/FeatureRow.astro';
 import RelatedGrid from '../components/RelatedGrid.astro';
 import CtaFinal from '../components/CtaFinal.astro';
 import { SITE, providerNode } from '../lib/site.js';
@@ -132,6 +133,25 @@ const schema = [
         ))
       }
     </div>
+  </Section>
+
+  <Section>
+    <FeatureRow
+      image="/images/4.webp"
+      alt="Black stretch limousine on the road at golden hour"
+      eyebrow="Also Available"
+      title="Medical appointment"
+      titleScript="transportation."
+    >
+      <p>
+        Round trips from Vernal to medical appointments in Salt Lake City,
+        Provo/Orem and Grand Junction. We drive you there, wait while you're
+        seen, and bring you home. From $700.
+      </p>
+      <a href="/medical-appointment-transportation-vernal" class="btn btn--dark">
+        Learn More <span class="btn__arrow">→</span>
+      </a>
+    </FeatureRow>
   </Section>
 
   <RelatedGrid items={related} />
