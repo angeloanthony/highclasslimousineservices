@@ -225,6 +225,14 @@ section { padding: 6rem 0; position: relative; }
   border-color: var(--gold-deep);
   color: var(--ivory);
 }
+/* `.nav__menu > li > a` (and the later `a:hover`) outrank `.nav__cta` and
+   turned the label charcoal/teal on the navy button. Re-assert the text
+   color only; padding etc. stay exactly as rendered before. */
+.nav__menu > li > a.nav__cta,
+.nav__menu > li > a.nav__cta:hover,
+.nav__menu > li > a.nav__cta:focus-visible {
+  color: #ffffff;
+}
 
 .nav__toggle { display: none; width: 32px; height: 24px; flex-direction: column; justify-content: space-between; }
 .nav__toggle span {
