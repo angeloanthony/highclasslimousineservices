@@ -80,6 +80,7 @@ export const SITE = {
     '/parties': 0.9,
     '/tours': 0.9,
     '/vernal-to-slc-airport-limo': 0.9,
+    '/medical-appointment-transportation-vernal': 0.85,
     '/bachelorette-party-limo-vernal': 0.85,
     '/bachelor-party-limo-vernal': 0.85,
     '/oilfield-executive-transportation-vernal': 0.85,
