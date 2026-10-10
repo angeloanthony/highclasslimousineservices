@@ -139,16 +139,22 @@ const relatedReading = [
     href: '/limousine-service-vernal-utah',
     title: 'Limousine Service in Vernal, Utah',
     blurb: 'The complete guide to every service we offer across the Basin.',
+    image: '/images/og-home.webp',
+    alt: 'Black High Class stretch limousine at night in Vernal, Utah',
   },
   {
     href: '/how-much-does-a-limo-cost-in-vernal',
     title: 'How Much Does a Limo Cost in Vernal',
     blurb: 'Honest pricing for every service we run.',
+    image: '/images/fleet-bg.webp',
+    alt: 'High Class Limousine Services black stretch limo, the fleet vehicle',
   },
   {
     href: '/things-to-do-in-vernal-utah',
     title: 'Things to Do in Vernal, Utah',
     blurb: "A visitor's guide to the area, written by people who live here.",
+    image: '/images/tour-2.webp',
+    alt: 'Stretch limousine beneath the Vernal, Utah town arch',
   },
 ];
 
@@ -441,13 +447,18 @@ const schema = {
       <div class="services__grid" style="margin-top:2rem;">
         {
           relatedReading.map((r) => (
-            <a
-              href={r.href}
-              class="service-card"
-              style="text-decoration:none;color:inherit;display:block;"
-            >
-              <h3 style="margin-top:0;color:inherit;">{r.title}</h3>
-              <p style="color:#555;">{r.blurb}</p>
+            <a href={r.href} class="service-card" style="text-decoration:none;">
+              <img
+                class="service-card__img"
+                src={r.image}
+                alt={r.alt}
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="service-card__content">
+                <h3 style="margin-top:0;">{r.title}</h3>
+                <p>{r.blurb}</p>
+              </div>
             </a>
           ))
         }
