@@ -1,0 +1,35 @@
+---
+/** Pricing guide: "why choose us" feature row with restrained gold icons. */
+interface Feature {
+  icon: 'fleet' | 'chauffeur' | 'local' | 'occasion';
+  title: string;
+  body: string;
+}
+
+interface Props {
+  features: Feature[];
+}
+
+const { features } = Astro.props;
+
+const icons = {
+  fleet: '<path d="M2 15.5V11l2.5-3.5h11L19 11h2a1.5 1.5 0 0 1 1.5 1.5v3"/><path d="M1.5 15.5h21v1.8h-21z"/><circle cx="6" cy="17.3" r="1.8"/><circle cx="18" cy="17.3" r="1.8"/><path d="M4.5 11h14.5M9 7.5V11M14 7.5V11"/>',
+  chauffeur: '<circle cx="12" cy="7.5" r="3.5"/><path d="M8 5.5h8M5 21v-2.5A5.5 5.5 0 0 1 10.5 13h3a5.5 5.5 0 0 1 5.5 5.5V21"/><path d="M12 13l-1.5 3 1.5 5 1.5-5z"/>',
+  local: '<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  occasion: '<path d="M8 3h8l-1 6a3 3 0 0 1-6 0z"/><path d="M12 12v6M8.5 21h7"/><path d="M5 5l1.5 1M19 5l-1.5 1"/>',
+};
+---
+
+<ul class="pg-why">
+  {
+    features.map((f) => (
+      <li class="pg-why__item">
+        <span class="pg-why__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" set:html={icons[f.icon]} />
+        </span>
+        <h3 class="pg-why__title">{f.title}</h3>
+        <p class="pg-why__body">{f.body}</p>
+      </li>
+    ))
+  }
+</ul>

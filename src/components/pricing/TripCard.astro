@@ -1,0 +1,35 @@
+---
+/**
+ * Pricing guide: one "common booking" with its published price range. The
+ * description and detail link(s) come from the MDX body via the slot.
+ */
+interface Props {
+  title: string;
+  price: string;
+  image: string;
+  alt: string;
+  /** object-position for the crop, e.g. "center 20%". */
+  focus?: string;
+}
+
+const { title, price, image, alt, focus } = Astro.props;
+---
+
+<article class="pg-trip">
+  <div class="pg-trip__media">
+    <img
+      src={image}
+      alt={alt}
+      width="720"
+      height="450"
+      loading="lazy"
+      decoding="async"
+      style={focus ? `object-position:${focus}` : undefined}
+    />
+  </div>
+  <div class="pg-trip__body">
+    <h3 class="pg-trip__title">{title}</h3>
+    <p class="pg-trip__price">{price}</p>
+    <div class="pg-trip__text"><slot /></div>
+  </div>
+</article>

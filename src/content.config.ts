@@ -37,6 +37,21 @@ const pageBase = {
   tagline: z.string().optional(),
   crumbs: z.array(crumb).default([]),
 
+  /** Opt-in cinematic page header (full-bleed photo). Omit for the plain one. */
+  hero: z
+    .object({
+      image: z.string().startsWith('/images/'),
+      /** Narrow variant for small screens (srcset). */
+      imageSmall: z.string().startsWith('/images/').optional(),
+      width: z.number().int(),
+      height: z.number().int(),
+      alt: z.string(),
+      eyebrow: z.string().optional(),
+      subtitle: z.string().optional(),
+      benefits: z.array(z.object({ icon: z.enum(['price', 'vehicle', 'occasion']), label: z.string() })).default([]),
+    })
+    .optional(),
+
   related: z.array(relatedItem).default([]),
 
   cta: z
@@ -48,6 +63,8 @@ const pageBase = {
       primaryHref: z.string().optional(),
       secondaryLabel: z.string().optional(),
       secondaryHref: z.string().optional(),
+      /** Background photo; defaults to /images/cta-bg.webp. */
+      image: z.string().startsWith('/images/').optional(),
     })
     .optional(),
 

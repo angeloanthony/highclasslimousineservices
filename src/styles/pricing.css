@@ -1,0 +1,225 @@
+/* ============================================================
+   PRICING GUIDE (/how-much-does-a-limo-cost-in-vernal)
+   Imported only by that page's MDX, so nothing here reaches other pages.
+   Uses the global tokens: cream / navy ink / champagne gold.
+   ============================================================ */
+
+.pg-section { padding: 6.5rem 0; background: var(--paper); }
+.pg-section--cream { background: #f7f3ec; }
+.pg-section .section-head { margin-bottom: 3.5rem; }
+.pg-section .section-head h2 { color: var(--ink); }
+.pg-section .section-head p { max-width: 640px; margin: 1rem auto 0; color: var(--stone-600); }
+.pg-note {
+  text-align: center; max-width: 640px; margin: 2.25rem auto 0;
+  font-size: 0.9rem; color: var(--stone-600);
+}
+
+/* Visible keyboard focus everywhere on the page. */
+.pg-page a:focus-visible,
+.pg-page summary:focus-visible,
+.pg-page button:focus-visible {
+  outline: 2px solid var(--gold-deep);
+  outline-offset: 3px;
+}
+
+/* ---------- Intro ---------- */
+.pg-intro { padding: 5.5rem 0 4.5rem; background: var(--paper); }
+.pg-intro__lead {
+  max-width: 860px; margin: 0 auto 3.5rem; text-align: center;
+  font-family: var(--font-accent); font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+  line-height: 1.6; color: var(--ink-soft);
+}
+.pg-intro__lead p { margin: 0; }
+.pg-intro__rule {
+  width: 120px; height: 1px; margin: 0 auto 3.5rem;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.pg-intro__body { max-width: 760px; margin: 0 auto; }
+.pg-intro__body .story-block { text-align: left; }
+.pg-intro__body .story-block p { color: var(--stone-600); }
+
+/* ---------- What affects the price (split) ---------- */
+.pg-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4.5rem; align-items: center;
+}
+.pg-split__media img {
+  width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block;
+  border-radius: 4px; box-shadow: var(--shadow-lg);
+}
+.pg-split__text .section-head { margin-bottom: 1.5rem; text-align: left; }
+.pg-split__text > p { color: var(--stone-600); margin-bottom: 1.5rem; }
+.pg-checks ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
+.pg-checks li {
+  position: relative; padding-left: 2.4rem;
+  color: var(--charcoal); line-height: 1.6;
+}
+.pg-checks li::before {
+  content: ''; position: absolute; left: 0; top: 0.15rem;
+  width: 1.5rem; height: 1.5rem; border-radius: 50%;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 0.85rem no-repeat,
+    linear-gradient(135deg, var(--gold-bright), var(--gold-deep));
+}
+.pg-checks strong { color: var(--ink); font-weight: 600; }
+
+/* ---------- Hourly rates ---------- */
+.pg-rates { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.pg-rate {
+  background: var(--paper); border: 1px solid var(--stone-100);
+  box-shadow: var(--shadow-sm); border-radius: 4px; overflow: hidden;
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease);
+}
+.pg-rate:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.pg-rate__media { aspect-ratio: 16 / 10; background: linear-gradient(160deg, var(--ink-soft), var(--ink)); }
+.pg-rate__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pg-rate__icon { display: grid; place-items: center; height: 100%; color: var(--gold-bright); }
+.pg-rate__icon svg { width: 34%; height: auto; }
+.pg-rate__body { padding: 1.5rem 1.25rem 1.6rem; text-align: center; }
+.pg-rate__title {
+  font-family: var(--font-display); font-size: 0.95rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink); margin: 0 0 0.35rem;
+}
+.pg-rate__capacity { font-size: 0.85rem; color: var(--stone-600); margin: 0 0 0.9rem; }
+.pg-rate__price {
+  font-family: var(--font-display); font-size: 1.65rem; color: var(--ink);
+  margin: 0; line-height: 1.2;
+}
+.pg-rate__unit {
+  display: block; font-family: var(--font-accent); font-style: italic;
+  font-size: 1rem; color: var(--gold-deep); letter-spacing: 0;
+}
+.pg-rate__min {
+  margin: 0.9rem 0 0; padding-top: 0.9rem; border-top: 1px solid var(--stone-100);
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--stone-600);
+}
+.pg-rates-note { text-align: center; margin: 2rem auto 0; max-width: 720px; color: var(--stone-600); font-size: 0.92rem; }
+
+.pg-incl { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3.5rem; }
+.pg-incl > div {
+  padding: 2rem 2.25rem; background: var(--paper);
+  border: 1px solid var(--stone-100); border-top: 2px solid var(--gold);
+}
+.pg-incl h3 { font-size: 1.2rem; color: var(--ink); margin: 0 0 0.75rem; }
+.pg-incl p { margin: 0; color: var(--stone-600); line-height: 1.7; }
+
+/* ---------- Common bookings ---------- */
+.pg-trips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.pg-trip {
+  display: flex; flex-direction: column;
+  background: var(--paper); border: 1px solid var(--stone-100);
+  box-shadow: var(--shadow-sm); border-radius: 4px; overflow: hidden;
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease);
+}
+.pg-trip:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.pg-trip__media { aspect-ratio: 16 / 10; overflow: hidden; background: var(--ink); }
+.pg-trip__media img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.8s var(--ease-out);
+}
+.pg-trip:hover .pg-trip__media img { transform: scale(1.05); }
+.pg-trip__body { padding: 1.4rem 1.35rem 1.5rem; display: flex; flex-direction: column; flex: 1; }
+.pg-trip__title {
+  font-family: var(--font-display); font-size: 0.92rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink); margin: 0 0 0.4rem; line-height: 1.4;
+}
+.pg-trip__price { font-family: var(--font-display); font-size: 1.35rem; color: var(--gold-deep); margin: 0 0 0.75rem; }
+.pg-trip__text { display: flex; flex-direction: column; flex: 1; }
+.pg-trip__text p { font-size: 0.88rem; line-height: 1.65; color: var(--stone-600); margin: 0 0 0.9rem; }
+.pg-trip__text p:last-child {
+  margin: auto 0 0; padding-top: 0.6rem;
+  font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+}
+.pg-trip__text a { color: var(--gold-deep); font-weight: 600; text-decoration: none; }
+.pg-trip__text a:hover { color: var(--ink); }
+
+/* ---------- Quote band ---------- */
+.pg-quote { display: grid; grid-template-columns: 1.15fr 0.85fr; background: #f7f3ec; }
+.pg-quote__main { display: flex; align-items: center; padding: 6rem 4rem 6rem max(2rem, calc((100vw - 1240px) / 2 + 2rem)); }
+.pg-quote__inner { max-width: 600px; }
+.pg-quote__inner .section-head { margin-bottom: 1.5rem; text-align: left; }
+.pg-quote__inner .section-head h2 { color: var(--ink); }
+.pg-quote__inner p { color: var(--stone-600); line-height: 1.8; }
+.pg-quote__actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+.pg-quote__panel {
+  position: relative; isolation: isolate; overflow: hidden;
+  background: var(--ink); color: var(--ivory);
+  display: flex; align-items: flex-end; min-height: 520px;
+}
+.pg-quote__img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center top; z-index: -2;
+}
+.pg-quote__panel::before {
+  content: ''; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(15,22,38,0.1) 0%, rgba(15,22,38,0.55) 38%, rgba(15,22,38,0.93) 62%, rgba(15,22,38,0.98) 100%);
+}
+
+/* Closing CTA: the shared style dims its photo to 30%; let the golden-hour
+   limo read a little more here (this stylesheet only loads on this page). */
+.cta-final::before { opacity: 0.42; background-position: center 65%; }
+.pg-quote__panel-inner { padding: 3.5rem 3rem; width: 100%; }
+.pg-quote__phone {
+  display: inline-block; font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.2vw, 2.6rem); color: var(--ivory);
+  text-decoration: none; margin-bottom: 1.75rem; letter-spacing: 0.02em;
+}
+.pg-quote__phone:hover { color: var(--gold-bright); }
+.pg-quote__benefits { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.85rem; }
+.pg-quote__benefits li {
+  position: relative; padding-left: 2rem; color: var(--stone-100); font-size: 0.95rem;
+}
+.pg-quote__benefits li::before {
+  content: ''; position: absolute; left: 0; top: 0.2rem;
+  width: 1.15rem; height: 1.15rem; border-radius: 50%;
+  border: 1px solid var(--gold-bright);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4b97f' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 0.7rem no-repeat;
+}
+
+/* ---------- Why choose ---------- */
+.pg-why {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem;
+  text-align: center;
+}
+.pg-why__icon {
+  display: inline-grid; place-items: center;
+  width: 64px; height: 64px; margin-bottom: 1.25rem;
+  color: var(--gold-deep);
+}
+.pg-why__icon svg { width: 44px; height: 44px; }
+.pg-why__title {
+  font-family: var(--font-display); font-size: 0.9rem; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--ink); margin: 0 0 0.6rem;
+}
+.pg-why__body { margin: 0 auto; max-width: 260px; font-size: 0.9rem; line-height: 1.65; color: var(--stone-600); }
+
+/* ---------- FAQ ---------- */
+.pg-faq .faq-list {
+  background: var(--paper); padding: 0.5rem 2.5rem;
+  border: 1px solid var(--stone-100); box-shadow: var(--shadow-sm);
+}
+.pg-faq .faq-item:first-child { border-top: none; }
+.pg-faq .faq-item:last-child { border-bottom: none; }
+.pg-faq .faq-item summary { font-size: 1rem; padding: 1.5rem 0; }
+.pg-faq .faq-item summary::after { color: var(--gold-deep); }
+.pg-faq .faq-answer { color: var(--stone-600); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+  .pg-rates, .pg-trips { grid-template-columns: repeat(2, 1fr); }
+  .pg-why { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 900px) {
+  .pg-split { grid-template-columns: 1fr; gap: 2.5rem; }
+  .pg-quote { grid-template-columns: 1fr; }
+  .pg-quote__main { padding: 4.5rem 1.5rem; }
+  .pg-quote__panel { min-height: 420px; }
+}
+@media (max-width: 640px) {
+  .pg-section { padding: 4.5rem 0; }
+  .pg-intro { padding: 4rem 0 3rem; }
+  .pg-rates, .pg-trips, .pg-why, .pg-incl { grid-template-columns: 1fr; }
+  .pg-incl > div { padding: 1.6rem 1.4rem; }
+  .pg-quote__panel-inner { padding: 2.5rem 1.5rem; }
+  .pg-faq .faq-list { padding: 0.25rem 1.25rem; }
+}

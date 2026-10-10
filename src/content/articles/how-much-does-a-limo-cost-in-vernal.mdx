@@ -5,6 +5,21 @@ path: '/how-much-does-a-limo-cost-in-vernal'
 h1: 'How Much Does a'
 h1Script: 'Limo Cost?'
 tagline: 'Vernal, Utah pricing for stretch limousines, airport transfers, weddings, prom, and tours — broken down honestly.'
+hero:
+  image: '/images/pricing/hero-1600.webp'
+  imageSmall: '/images/pricing/hero-800.webp'
+  width: 1586
+  height: 992
+  alt: 'Black stretch limousine at golden hour beneath the mountains near Vernal, Utah'
+  eyebrow: 'Pricing Guide'
+  subtitle: 'Clear Pricing. Luxury Transportation. Vernal, Utah.'
+  benefits:
+    - icon: 'price'
+      label: 'Transparent Rates'
+    - icon: 'vehicle'
+      label: 'Premium Vehicles'
+    - icon: 'occasion'
+      label: 'For Any Occasion'
 crumbs:
   - label: 'Home'
     href: '/'
@@ -19,6 +34,7 @@ cta:
   primaryHref: '/contact#quote'
   secondaryLabel: 'Call (435) 219-9447'
   secondaryHref: 'tel:+14352199447'
+  image: '/images/pricing/hero-1600.webp'
 schema:
   - '@type': 'BreadcrumbList'
     itemListElement:
@@ -75,153 +91,47 @@ schema:
 kind: 'intent'
 ---
 
-import Card from '../../components/Card.astro';
-import CardGrid from '../../components/CardGrid.astro';
+import '../../styles/pricing.css';
 import FaqAccordion from '../../components/FaqAccordion.astro';
 import PriceCalculator from '../../components/islands/PriceCalculator.astro';
-import Section from '../../components/Section.astro';
 import SectionHead from '../../components/SectionHead.astro';
-import SplitRow from '../../components/SplitRow.astro';
 import StoryBlock from '../../components/StoryBlock.astro';
+import RateCard from '../../components/pricing/RateCard.astro';
+import TripCard from '../../components/pricing/TripCard.astro';
+import QuotePanel from '../../components/pricing/QuotePanel.astro';
+import WhyChoose from '../../components/pricing/WhyChoose.astro';
 
-<Section>
-<StoryBlock>
+<div class="pg-page">
+
+<section class="pg-intro">
+<div class="container">
+<div class="pg-intro__lead">
+
 Limousine service in Vernal, Utah typically costs $135–$200 per hour for a stretch limo with a 3-hour minimum. Airport transfers to Salt Lake City run $325–$500 one-way depending on pickup city. Weddings range from $500 for a 4-hour package to $1,500 for an all-day Basin-wide booking. Prom packages run $450–$900. Sunset tours of Flaming Gorge or Dinosaur National Monument are $200–$400 for short tours and $1,000–$1,600 for full-day excursions. Final pricing depends on hours, distance, vehicle size, and whether gratuity is included. This page walks through every service with realistic 2026 numbers.
-</StoryBlock>
-</Section>
 
-<Section>
+</div>
+<div class="pg-intro__rule" aria-hidden="true"></div>
+<div class="pg-intro__body">
 <StoryBlock dropCap>
 **The honest answer to "how much does a limo cost in Vernal" is: it depends.** But "it depends" is a useless answer when you're trying to plan a wedding budget or figure out if a prom limo is realistic. So this page does the work for you — walks through every service we run, gives the actual price ranges, and explains what changes the number.
 
 Every price below is what limousine service costs in Vernal and the broader Uintah Basin in 2026. These aren't aspirational big-city numbers; they reflect what limousine companies in this corner of Utah actually charge. The high end of each range is for premium dates (Saturdays in peak season) and longer routes. The low end is what a Tuesday-afternoon booking looks like.
 </StoryBlock>
-</Section>
+</div>
+</div>
+</section>
 
-<Section>
-<SectionHead eyebrow="Hourly Rates" title="The base" titleScript="number." />
+<section class="pg-section pg-section--cream">
+<div class="container pg-split">
+<div class="pg-split__media">
+<img src="/images/pricing/interior.webp" alt="Stretch limousine interior with leather seating, LED lighting and a fully lit bar" width="1000" height="556" loading="lazy" decoding="async" />
+</div>
+<div class="pg-split__text">
+<SectionHead eyebrow="What Changes The Number" title="Six things that" titleScript="move the price." />
 
-Most limousine bookings are billed hourly with a 3-hour minimum. Here's what a stretch limo runs by the hour in our area.
-
-Vehicle Type
-
-Capacity
-
-Hourly Rate
-
-Minimum
-
-Stretch Limousine
-
-8–10 passengers
-
-$135–$165
-
-3 hours
-
-Larger Stretch (14-pass)
-
-12–14 passengers
-
-$165–$200
-
-3 hours
-
-Executive Sedan
-
-1–4 passengers
-
-$95–$130
-
-2 hours
-
-SUV (Suburban-class)
-
-5–7 passengers
-
-$110–$150
-
-2 hours
-
-_Rates include chauffeur, fuel, water and ice. Gratuity (18% standard) and any tolls are added._
-</Section>
-
-<Section>
-<SectionHead eyebrow="By Service Type" title="Common bookings," titleScript="real numbers." />
-
-<CardGrid>
-<Card title="Wedding Limousine">
-$500–$1,500
-
-4-hour packages start at $500. Full-day Basin-wide bookings (8 hours) run up to $1,500. Most weddings come in around $750–$1,000.
-
-[Wedding limo details →](/wedding-limo-uintah-basin)
-</Card>
-
-<Card title="Prom Limousine">
-$450–$900
-
-Standard 4-hour prom package. Pricing depends on the size of the limo (8-pass vs 14-pass) and how late the dance runs.
-
-[Prom limo details →](/prom-limo-uintah-high-school)
-</Card>
-
-<Card title="Vernal to SLC Airport">
-$350–$500 one-way
-
-Flat-rate transfers from Vernal to SLC International. Roosevelt is $325 flat; Duchesne is $300 flat. Round-trip pricing is roughly 1.8x one-way.
-
-[Airport limo details →](/vernal-to-slc-airport-limo)
-</Card>
-
-<Card title="Bachelorette / Bachelor Party">
-$450–$1,500
-
-Local Vernal-area parties run $450–$900 for a typical evening. SLC weekend trips with full-night service are $700–$1,500.
-
-[Bachelorette →](/bachelorette-party-limo-vernal) · [Bachelor →](/bachelor-party-limo-vernal)
-</Card>
-
-<Card title="Flaming Gorge Tour">
-$400–$1,600
-
-Sunset tour at $400–$600. Half-day at $675–$1,000. Full-day at $1,000–$1,600. Cost depends on hours and stops.
-
-[Flaming Gorge details →](/limo-service-flaming-gorge)
-</Card>
-
-<Card title="Dinosaur National Monument Tour">
-$400–$1,200
-
-Half-day tours run $400–$700. Full-day tours $700–$1,200. Includes the Quarry Visitor Center, Cub Creek Road petroglyphs, and scenic stops.
-
-[Dinosaur tour details →](/limo-near-dinosaur-national-monument)
-</Card>
-
-<Card title="Funeral Limousine">
-$400–$700
-
-Family transport from funeral home to cemetery and reception, typically 3–4 hours. Coordinated with Phillips Funeral Home and Blackburn Mortuary.
-
-[Funeral limo details →](/funeral-limousine-vernal)
-</Card>
-
-<Card title="Wine Tour Limo">
-$675–$1,800
-
-Half-day tour of regional Utah wineries and the Vernal Brewing Co. at $675–$1,000. Full-day tours up to $1,800.
-
-[Wine tour details →](/wine-tour-limo-vernal-utah)
-</Card>
-</CardGrid>
-</Section>
-
-<PriceCalculator />
-
-<Section>
-<SplitRow eyebrow="What Changes The Number" title="Six things that" titleScript="move the price.">
-<Fragment slot="left">
 The hourly rate is the base. From there, six factors push the final invoice up or down.
+
+<div class="pg-checks">
 
 - **Day of the week:** Saturdays are 10–20% higher than weekday bookings.
 - **Season:** Prom weekend and peak wedding season (May–September) are higher than off-season.
@@ -229,27 +139,147 @@ The hourly rate is the base. From there, six factors push the final invoice up o
 - **Total hours:** Longer bookings get better per-hour rates. An 8-hour wedding day is cheaper per hour than a 3-hour minimum.
 - **Distance:** Long-haul transfers (SLC, Flaming Gorge, Dinosaur Monument) are flat-rate. In-town hourly stays at standard rates.
 - **Gratuity:** 18% is industry standard and built into our quotes. Some companies quote without it — always ask.
-</Fragment>
-<Fragment slot="right">
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="pg-section">
+<div class="container">
+<SectionHead eyebrow="Hourly Rates" title="The base" titleScript="number." center>
+<p>Most limousine bookings are billed hourly with a 3-hour minimum. Here's what a stretch limo runs by the hour in our area.</p>
+</SectionHead>
+
+<div class="pg-rates">
+<RateCard title="Stretch Limousine" capacity="8–10 passengers" rate="$135–$165" minimum="3 hours" image="/images/pricing/stretch.webp" alt="Black stretch limousine parked at sunset" />
+<RateCard title="Larger Stretch (14-pass)" capacity="12–14 passengers" rate="$165–$200" minimum="3 hours" image="/images/pricing/stretch-xl.webp" alt="Spacious stretch limousine interior with wraparound leather seating" />
+<RateCard title="Executive Sedan" capacity="1–4 passengers" rate="$95–$130" minimum="2 hours" icon="sedan" />
+<RateCard title="SUV (Suburban-class)" capacity="5–7 passengers" rate="$110–$150" minimum="2 hours" icon="suv" />
+</div>
+
+<p class="pg-rates-note"><em>Rates include chauffeur, fuel, water and ice. Gratuity (18% standard) and any tolls are added.</em></p>
+
+<div class="pg-incl">
+<div>
+
 ### What's Always Included
 
 Chauffeur (tuxedoed for formal events, business-attire for executive transfers), fuel, bottled water, ice, sound system with phone hookup, LED interior lighting, and a clean exterior. We don't tack on fuel surcharges or "vehicle prep" fees after the fact.
 
+</div>
+<div>
+
 ### What Costs Extra
 
 Champagne service ($45 per bottle), red carpet rollout (free for weddings, $25 for other events), additional stops beyond the original itinerary (billed at the hourly rate), and any toll roads (rare in our service area).
-</Fragment>
-</SplitRow>
-</Section>
 
-<Section>
-<SectionHead eyebrow="Common Questions" title="Pricing" titleScript="questions." />
+</div>
+</div>
+</div>
+</section>
 
-<FaqAccordion items={[{"q":"Why is there a 3-hour minimum?","a":"A limousine has prep time on either side of every booking — wash, detail, position the vehicle, return it. A 1-hour booking still takes a half-day to staff. The 3-hour minimum reflects the actual cost of putting a clean limo on the road."},{"q":"Are there cheaper options for short trips?","a":"Yes. Our executive sedan service has a 2-hour minimum and runs $95–$130 per hour. For airport transfers under 30 miles, ride-share is usually cheaper if luxury isn't the goal."},{"q":"Do you offer flat rates instead of hourly?","a":"Yes, for airport transfers and known-distance tours. Vernal-to-SLC airport, Roosevelt-to-SLC, Duchesne-to-SLC, Flaming Gorge sunset tour, and Dinosaur Monument half-day are all flat-rate options."},{"q":"How does the deposit work?","a":"A 25% non-refundable deposit holds the date. Balance is due one week before the booking. We accept credit card, debit, and check."},{"q":"What's the cancellation policy?","a":"Cancellations more than 30 days out get the deposit refunded minus a $75 processing fee. Inside 30 days, the deposit is forfeit. Inside 7 days, the full booking amount is due. Weather-related cancellations are handled case-by-case."}]} />
-</Section>
+<section class="pg-section pg-section--cream">
+<div class="container">
+<SectionHead eyebrow="By Service Type" title="Common bookings," titleScript="real numbers." center />
 
-<Section>
+<div class="pg-trips">
+<TripCard title="Wedding Limousine" price="$500–$1,500" image="/images/pricing/wedding.webp" alt="Bride and groom stepping into a black stretch limousine outside the Vernal Utah Temple">
+
+4-hour packages start at $500. Full-day Basin-wide bookings (8 hours) run up to $1,500. Most weddings come in around $750–$1,000.
+
+[Wedding limo details →](/wedding-limo-uintah-basin)
+
+</TripCard>
+
+<TripCard title="Prom Limousine" price="$450–$900" image="/images/pricing/prom.webp" alt="Prom couples in formal wear beside a black stretch limousine">
+
+Standard 4-hour prom package. Pricing depends on the size of the limo (8-pass vs 14-pass) and how late the dance runs.
+
+[Prom limo details →](/prom-limo-uintah-high-school)
+
+</TripCard>
+
+<TripCard title="Vernal to SLC Airport" price="$350–$500 one-way" image="/images/pricing/airport.webp" alt="Stretch limousine waiting outside the airport terminal at sunset">
+
+Flat-rate transfers from Vernal to SLC International. Roosevelt is $325 flat; Duchesne is $300 flat. Round-trip pricing is roughly 1.8x one-way.
+
+[Airport limo details →](/vernal-to-slc-airport-limo)
+
+</TripCard>
+
+<TripCard title="Bachelorette / Bachelor Party" price="$450–$1,500" image="/images/pricing/party.webp" alt="Party group posing with a stretch limousine in front of a house lit with holiday lights">
+
+Local Vernal-area parties run $450–$900 for a typical evening. SLC weekend trips with full-night service are $700–$1,500.
+
+[Bachelorette →](/bachelorette-party-limo-vernal) · [Bachelor →](/bachelor-party-limo-vernal)
+
+</TripCard>
+
+<TripCard title="Flaming Gorge Tour" price="$400–$1,600" image="/images/pricing/gorge.webp" alt="Stretch limousine on the road above the Flaming Gorge reservoir">
+
+Sunset tour at $400–$600. Half-day at $675–$1,000. Full-day at $1,000–$1,600. Cost depends on hours and stops.
+
+[Flaming Gorge details →](/limo-service-flaming-gorge)
+
+</TripCard>
+
+<TripCard title="Dinosaur National Monument Tour" price="$400–$1,200" image="/images/pricing/dinosaur.webp" alt="The High Class Limousine T-rex mascot in a tuxedo beside a stretch limo at sunset" focus="center 15%">
+
+Half-day tours run $400–$700. Full-day tours $700–$1,200. Includes the Quarry Visitor Center, Cub Creek Road petroglyphs, and scenic stops.
+
+[Dinosaur tour details →](/limo-near-dinosaur-national-monument)
+
+</TripCard>
+
+<TripCard title="Funeral Limousine" price="$400–$700" image="/images/pricing/funeral.webp" alt="Chauffeur holding the door as a family in black boards a limousine" focus="center 30%">
+
+Family transport from funeral home to cemetery and reception, typically 3–4 hours. Coordinated with Phillips Funeral Home and Blackburn Mortuary.
+
+[Funeral limo details →](/funeral-limousine-vernal)
+
+</TripCard>
+
+<TripCard title="Wine Tour Limo" price="$675–$1,800" image="/images/pricing/wine.webp" alt="Limousine bar with crystal glassware and decanters lit in blue">
+
+Half-day tour of regional Utah wineries and the Vernal Brewing Co. at $675–$1,000. Full-day tours up to $1,800.
+
+[Wine tour details →](/wine-tour-limo-vernal-utah)
+
+</TripCard>
+</div>
+
+<p class="pg-note">Price ranges are estimates, not quotes. Your exact price is confirmed when you book.</p>
+</div>
+</section>
+
+<PriceCalculator />
+
+<QuotePanel image="/images/pricing/quote.webp" alt="Black stretch limousine parked at sunset" benefits={['Quotes by phone in about five minutes', 'Written confirmation in your inbox the same day', '18% gratuity built into our quotes']}>
 <SectionHead eyebrow="Get a Real Quote" title="Numbers for" titleScript="your trip." />
 
 The ranges on this page are honest, but every booking is its own thing. The fastest way to know what your specific event costs is to call. We give quotes by phone in about five minutes — date, time, group size, route — and you'll have a written confirmation in your inbox the same day.
-</Section>
+</QuotePanel>
+
+<section class="pg-section">
+<div class="container">
+<SectionHead eyebrow="Why High Class Limousine" title="More than" titleScript="a ride." center />
+
+<WhyChoose features={[
+  { icon: 'fleet', title: 'Luxury Fleet', body: 'Stretch limousines for 8–14 passengers, plus executive sedans and Suburban-class SUVs.' },
+  { icon: 'chauffeur', title: 'Professional Chauffeurs', body: 'Tuxedoed for formal events, business attire for executive transfers.' },
+  { icon: 'local', title: 'Local Knowledge', body: 'Priced for Vernal and the Uintah Basin, with flat rates to SLC, Flaming Gorge and Dinosaur Monument.' },
+  { icon: 'occasion', title: 'Any Occasion', body: 'Weddings, prom, airport transfers, parties, tours, wine tours and funerals.' },
+]} />
+</div>
+</section>
+
+<section class="pg-section pg-section--cream pg-faq">
+<div class="container">
+<SectionHead eyebrow="Common Questions" title="Pricing" titleScript="questions." center />
+
+<FaqAccordion items={[{"q":"Why is there a 3-hour minimum?","a":"A limousine has prep time on either side of every booking — wash, detail, position the vehicle, return it. A 1-hour booking still takes a half-day to staff. The 3-hour minimum reflects the actual cost of putting a clean limo on the road."},{"q":"Are there cheaper options for short trips?","a":"Yes. Our executive sedan service has a 2-hour minimum and runs $95–$130 per hour. For airport transfers under 30 miles, ride-share is usually cheaper if luxury isn't the goal."},{"q":"Do you offer flat rates instead of hourly?","a":"Yes, for airport transfers and known-distance tours. Vernal-to-SLC airport, Roosevelt-to-SLC, Duchesne-to-SLC, Flaming Gorge sunset tour, and Dinosaur Monument half-day are all flat-rate options."},{"q":"How does the deposit work?","a":"A 25% non-refundable deposit holds the date. Balance is due one week before the booking. We accept credit card, debit, and check."},{"q":"What's the cancellation policy?","a":"Cancellations more than 30 days out get the deposit refunded minus a $75 processing fee. Inside 30 days, the deposit is forfeit. Inside 7 days, the full booking amount is due. Weather-related cancellations are handled case-by-case."}]} />
+</div>
+</section>
+
+</div>

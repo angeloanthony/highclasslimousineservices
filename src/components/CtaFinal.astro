@@ -10,6 +10,8 @@ interface Props {
   /** Defaults to the phone CTA every legacy page used. */
   secondaryLabel?: string;
   secondaryHref?: string;
+  /** Background photo; global.css falls back to /images/cta-bg.webp. */
+  image?: string;
 }
 
 const {
@@ -20,10 +22,11 @@ const {
   primaryHref = '/contact#quote',
   secondaryLabel = `Call ${SITE.phone}`,
   secondaryHref = SITE.phoneHref,
+  image,
 } = Astro.props;
 ---
 
-<section class="cta-final">
+<section class="cta-final" style={image ? `--cta-bg:url('${image}')` : undefined}>
   <h2>
     {title}
     {

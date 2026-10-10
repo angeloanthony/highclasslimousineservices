@@ -1,0 +1,39 @@
+---
+/**
+ * Pricing guide: two-column quote band. Left = the page's own "get a real
+ * quote" copy (slot) and actions; right = navy call panel. There is no form
+ * on this site — quotes are by phone or via /contact (Cal.com), and the
+ * PriceCalculator island above hands its estimate to /contact.
+ */
+import { SITE } from '../../lib/site.js';
+
+interface Props {
+  image: string;
+  alt: string;
+  benefits: string[];
+}
+
+const { image, alt, benefits } = Astro.props;
+---
+
+<section class="pg-quote" id="quote">
+  <div class="pg-quote__main">
+    <div class="pg-quote__inner">
+      <slot />
+      <div class="pg-quote__actions">
+        <a href="/contact#quote" class="btn btn--gold">Request a Quote <span class="btn__arrow">→</span></a>
+        <a href="#price-calculator" class="btn btn--outline">Build an Estimate</a>
+      </div>
+    </div>
+  </div>
+  <aside class="pg-quote__panel" aria-label="Call for a quote">
+    <img class="pg-quote__img" src={image} alt={alt} width="900" height="563" loading="lazy" decoding="async" />
+    <div class="pg-quote__panel-inner">
+      <div class="page-header__eyebrow">Or call us</div>
+      <a class="pg-quote__phone" href={SITE.phoneHref}>{SITE.phone}</a>
+      <ul class="pg-quote__benefits">
+        {benefits.map((b) => <li>{b}</li>)}
+      </ul>
+    </div>
+  </aside>
+</section>
