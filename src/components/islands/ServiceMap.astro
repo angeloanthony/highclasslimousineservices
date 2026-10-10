@@ -49,15 +49,15 @@ import { SITE } from '../../lib/site.js';
       scrollWheelZoom: false, // click the map to enable
     });
 
-    L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-      {
-        attribution:
-          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 19,
-      }
-    ).addTo(map);
+    // OpenStreetMap standard tiles: no API key (CARTO now requires one and
+    // serves "API KEY REQUIRED" tiles without it). Usage policy:
+    // https://operations.osmfoundation.org/policies/tiles/ — keep the
+    // attribution visible and don't prefetch.
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:
+        '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19,
+    }).addTo(map);
 
     const goldIcon = L.divIcon({
       className: 'map-marker',

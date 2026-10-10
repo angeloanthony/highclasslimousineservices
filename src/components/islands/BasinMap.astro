@@ -46,6 +46,8 @@
   /* Global rather than scoped: parts of this widget are rendered by JS at
      runtime and never receive Astro's scope attribute. */
   .hc-map-section { padding: 5rem 0; background: var(--paper); }
+  /* Dark basemap from standard OSM tiles (matches the old CARTO dark_all). */
+  .hc-map-tiles--dark { filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9) saturate(0.35); }
   .hc-map-section .section-head h2 { letter-spacing: -0.01em; }
   .hc-map-section .section-head p {
     font-family: var(--font-accent);
@@ -305,9 +307,13 @@ import 'leaflet/dist/leaflet.css';
       zoomControl: true
     });
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '© OpenStreetMap contributors © CARTO',
-      subdomains: 'abcd',
+    // OpenStreetMap standard tiles (CARTO now requires an API key). The
+    // .hc-map-tiles--dark filter recreates the old dark basemap; it applies
+    // to this tile layer only, not markers or the polygon. Usage policy:
+    // https://operations.osmfoundation.org/policies/tiles/
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      className: 'hc-map-tiles--dark',
       maxZoom: 19
     }).addTo(map);
 
